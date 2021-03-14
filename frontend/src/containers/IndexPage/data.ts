@@ -18,9 +18,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
             },
             shouldIndex
           },
-          name
-          heading
-          infoParagraph
+          
         }
       }
     `,

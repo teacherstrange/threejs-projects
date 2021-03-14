@@ -15,14 +15,6 @@
       "type": "string",
       "required": true
     },
-    "heading": {
-      "type": "string",
-      "required": true
-    },
-    "infoParagraph": {
-      "type": "richtext",
-      "required": true
-    },
     "language": {
       "model": "language"
     },
