@@ -55,7 +55,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   ::selection {
-    background-color: ${sharedValues.colors.black};
+    background-color: ${sharedValues.colors.brand};
     color: ${sharedValues.colors.white};
   }
 
