@@ -2,6 +2,10 @@ import React, { memo, useRef, useEffect, useState } from 'react';
 import { PerspectiveCamera, WebGLRenderer } from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
+import SandboxItem3D from './classes/SandboxItem3D';
+
+// eslint-disable-next-line node/no-unpublished-import
+import { OrbitControls } from '../../../../../node_modules/three/examples/jsm/controls/OrbitControls.js';
 import SandboxScene from './classes/SandboxScene';
 import { Wrapper } from './styled/Wrapper';
 import { RendererWrapper } from './styled/RendererWrapper';
@@ -17,6 +21,8 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
   const renderer = useRef<WebGLRenderer>();
 
   const rendererWrapperEl = useRef<HTMLElement>();
+
+  const controls = useRef<OrbitControls>();
   const lastFrameTime = useRef(0);
 
   const [scene, setScene] = useState<SandboxScene>(null);
@@ -24,6 +30,10 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
 
   useEffect(() => {
     renderer.current = new WebGLRenderer({ antialias: true, alpha: true });
+    controls.current = new OrbitControls(
+      camera.current,
+      rendererWrapperEl.current,
+    );
 
     if (rendererWrapperEl.current && !renderer.current.domElement.parentNode) {
       rendererWrapperEl.current.appendChild(renderer.current.domElement);
@@ -45,15 +55,10 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
 
   useEffect(() => {
     if (!scene) {
-      return;
-    }
-    scene.items = [{ name: 'me' }, { name: 'you' }];
-  }, []);
-
-  useEffect(() => {
-    if (!scene) {
       return () => {};
     }
+
+    scene.items = [{ name: 'me' }, { name: 'you' }];
 
     let rafId: number;
     let isResumed = true;
@@ -71,6 +76,7 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
       const slowDownFactor = Math.min(Math.max(dt / DT_60FPS, 1), 1);
       TWEEN.update(time);
       scene.update(time, dt, slowDownFactor);
+      controls.current.update();
       renderer.current.render(scene, camera.current);
     };
 
@@ -81,6 +87,7 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
       renderer.current.setSize(bounds.width, bounds.height);
       camera.current.aspect = bounds.width / bounds.height;
       camera.current.updateProjectionMatrix();
+      camera.current.position.z = 3;
     };
 
     const onVisibilityChange = () => {
@@ -123,23 +130,23 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
   };
 
   const onItemClickInternal = (event: Event) => {
-    const item = (event['item'] as StoryItem3D).item;
+    const item = (event['item'] as SandboxItem3D).item;
     onItemClick && onItemClick(item);
   };
 
   const onItemMouseOverInternal = (event: Event) => {
-    const item = (event['item'] as StoryItem3D).item;
+    const item = (event['item'] as SandboxItem3D).item;
     setIsMouseOver(true);
     onItemMouseOver && onItemMouseOver(item);
   };
 
   const onItemMouseOutInternal = (event: Event) => {
-    const item = (event['item'] as StoryItem3D).item;
+    const item = (event['item'] as SandboxItem3D).item;
     setIsMouseOver(false);
     onItemMouseOut(item);
   };
   const onCurrentItemChangeInternal = (event: Event) => {
-    const item = (event['item'] as StoryItem3D)?.item;
+    const item = (event['item'] as SandboxItem3D)?.item;
     item && onCurrentItemChange && onCurrentItemChange(item);
   };
 

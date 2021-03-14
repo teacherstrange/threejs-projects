@@ -6,5 +6,5 @@ interface Props {}
 export const CanvasWrapper = styled(motion.div)<Props>`
   height: 400px;
   position: relative;
-  background-color: green;
+  border: 2px solid red;
 `;

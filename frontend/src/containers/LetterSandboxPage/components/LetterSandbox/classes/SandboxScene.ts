@@ -1,4 +1,4 @@
-import { PerspectiveCamera } from 'three';
+import * as THREE from 'three';
 
 import InteractiveScene from './InteractiveScene';
 import SandboxItem3D from './SandboxItem3D';
@@ -8,7 +8,7 @@ export default class SandboxScene extends InteractiveScene {
   items3D: SandboxItem3D[] = [];
   maxAnisotropy: number;
 
-  constructor(camera: PerspectiveCamera, maxAnisotropy: number) {
+  constructor(camera: THREE.PerspectiveCamera, maxAnisotropy: number) {
     super(camera);
     this.maxAnisotropy = maxAnisotropy;
   }
@@ -30,13 +30,15 @@ export default class SandboxScene extends InteractiveScene {
 
     items &&
       items.forEach((item, index) => {
-        // const item3D = new SandboxItem3D(item, index === 0, this.maxAnisotropy);
-        const item3D = null;
+        const item3D = new SandboxItem3D(item, index === 0, this.maxAnisotropy);
+        // const item3D = null;
+
         item3D.addEventListener('click', this.onItemClick);
         item3D.addEventListener('mouseover', this.onItemMouseOver);
         item3D.addEventListener('mouseout', this.onItemMouseOut);
         this.items3D.push(item3D);
         this.add(item3D);
+        console.log(this);
       });
 
     this.animateIn();
