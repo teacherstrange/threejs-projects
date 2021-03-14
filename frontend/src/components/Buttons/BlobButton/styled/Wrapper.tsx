@@ -2,13 +2,12 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 import { sharedValues } from 'utils/sharedValues';
-import { colors, renderColor } from 'utils/theme/themes';
 
 interface Props {}
 
 export const Wrapper = styled(motion.button)<Props>`
-  background-color: ${renderColor(colors.brand500)};
-  color: ${renderColor(colors.white)};
+  background-color: ${sharedValues.colors.brand};
+  color: ${sharedValues.colors.white};
 
   border-radius: 15rem;
   cursor: pointer;
@@ -16,7 +15,7 @@ export const Wrapper = styled(motion.button)<Props>`
   display: inline-block;
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 20px ${renderColor(colors.brand500)};
+  box-shadow: 0 0 20px ${sharedValues.colors.brand};
 
   &::before {
     content: '';

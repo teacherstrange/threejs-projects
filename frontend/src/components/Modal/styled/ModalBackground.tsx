@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 import { tween } from 'components/Animations/framerTransitions';
-import { colors, renderColor } from 'utils/theme/themes';
+import { sharedValues } from 'utils/sharedValues';
 
 interface Props {}
 
@@ -12,7 +12,7 @@ export const ModalBackground = styled(motion.button)<Props>`
   height: 100%;
   top: 0;
   left: 0;
-  background-color: ${renderColor(colors.black)};
+  background-color: ${sharedValues.colors.black};
 `;
 ModalBackground.defaultProps = {
   variants: {

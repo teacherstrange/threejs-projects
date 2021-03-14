@@ -6,6 +6,7 @@ import { sharedValues } from 'utils/sharedValues';
 interface Props {}
 
 export const ErrorCode = styled(motion.p)<Props>`
-  ${sharedValues.text.normal};
+  font-size: 1.5rem;
+  color: ${sharedValues.colors.black};
   letter-spacing: 1px;
 `;

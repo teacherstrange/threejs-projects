@@ -8,9 +8,6 @@ import NextDocument, {
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
-import { switchColorsBasedOnColorMode } from 'utils/theme/themesConfig';
-import { THEME_VALUES } from 'utils/theme/themes';
-
 export default class Document extends NextDocument {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet();
@@ -72,13 +69,6 @@ export default class Document extends NextDocument {
           />
 
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `(${switchColorsBasedOnColorMode.toString()})({themeValues:'${JSON.stringify(
-                THEME_VALUES,
-              )}'})`,
-            }}
-          />
         </Head>
         <body>
           <Main />

@@ -4,13 +4,10 @@ import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 
 import { GlobalStyles } from 'utils/styled/GlobalStyles';
-import { Layout } from 'components/Layout/Layout';
 import { PageWrapper } from 'components/PageWrapper/PageWrapper';
 import 'utils/styled/fontFace.css';
 import 'focus-visible';
 import FPSStats from 'react-fps-stats';
-
-import { ThemeContextProvider } from '../context/ThemeContext';
 
 export default function MyApp(props: AppProps) {
   const { Component, pageProps } = props;
@@ -22,9 +19,8 @@ export default function MyApp(props: AppProps) {
   }, [isInit]);
 
   return (
-    <ThemeContextProvider>
+    <>
       <GlobalStyles />
-      <Layout />
       <AnimatePresence exitBeforeEnter={false}>
         <PageWrapper
           router={router}
@@ -35,6 +31,6 @@ export default function MyApp(props: AppProps) {
         </PageWrapper>
       </AnimatePresence>
       <FPSStats />
-    </ThemeContextProvider>
+    </>
   );
 }

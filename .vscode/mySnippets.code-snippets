@@ -31,10 +31,6 @@
     ],
     "description": "Switch statement"
   },
-  "use theme colors": {
-    "prefix": "ic",
-    "body": ["import { colors, renderColor } from 'utils/theme/themes';"]
-  },
   "Console.log": {
     "prefix": "clg",
     "body": ["console.log($1)"],

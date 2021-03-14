@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { media } from 'utils/responsive';
 import { sharedValues } from 'utils/sharedValues';
 import { springMedium } from 'components/Animations/framerTransitions';
-import { colors, renderColor } from 'utils/theme/themes';
 
 interface Props {
   maxWidth: number;
@@ -18,7 +17,7 @@ export const ModalContentWrapper = styled(motion.div)<Props>`
   max-width: ${props => props.maxWidth}px;
   margin: ${props => props.margin}px ${props => props.margin}px 0
     ${props => props.margin}px;
-  background: ${renderColor(colors.background500)};
+  background: ${sharedValues.colors.white};
   padding: ${props => props.padding / 1.2}px;
   border-radius: ${sharedValues.borderRadius.normal};
   position: relative;

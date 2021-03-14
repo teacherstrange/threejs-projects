@@ -1,4 +1,3 @@
-import { css } from 'styled-components';
 import { rgba } from 'polished';
 
 // :lang(en-US) {
@@ -9,15 +8,10 @@ import { rgba } from 'polished';
 // }
 
 export const sharedValues = {
-  text: {
-    normal: css`
-      font-size: 1.5rem;
-      line-height: 2.5rem;
-    `,
-    small: css`
-      font-size: 1.2rem;
-      line-height: 1.6rem;
-    `,
+  colors: {
+    black: '#000000',
+    white: '#ffffff',
+    brand: '#8518ed',
   },
   transitionTimes: {
     normal: '0.45s',
@@ -33,22 +27,6 @@ export const sharedValues = {
   },
   containers: {
     normal: {
-      maxWidth: 1420,
-      referenceWidth: 1620,
-      mobilePadding: 28,
-      get breakpoint() {
-        return this.referenceWidth;
-      },
-    },
-    indexPage: {
-      maxWidth: 1420,
-      referenceWidth: 1620,
-      mobilePadding: 28,
-      get breakpoint() {
-        return this.referenceWidth;
-      },
-    },
-    privacyPolicyPage: {
       maxWidth: 1420,
       referenceWidth: 1620,
       mobilePadding: 28,

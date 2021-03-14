@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 import { sharedValues } from 'utils/sharedValues';
-import { colors, renderColor } from 'utils/theme/themes';
 
 export const GlobalStyles = createGlobalStyle`
   *,
@@ -56,8 +55,8 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   ::selection {
-    background-color: ${renderColor(colors.brand500)};
-    color: ${renderColor(colors.white)};
+    background-color: ${sharedValues.colors.black};
+    color: ${sharedValues.colors.white};
   }
 
   a[href^="tel"]{
