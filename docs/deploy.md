@@ -26,4 +26,4 @@
 **Possible errors**
 
 1. In develop mode (local) check and change if necessary values from /cms/config/database.js
-2. Deploy apps..
+2. Deploy apps...
