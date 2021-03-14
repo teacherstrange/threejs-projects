@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 
 interface Props {}
 
-export const Wrapper = styled(motion.div)<Props>`
+export const CanvasWrapper = styled(motion.div)<Props>`
+  height: 400px;
   position: relative;
+  background-color: green;
 `;

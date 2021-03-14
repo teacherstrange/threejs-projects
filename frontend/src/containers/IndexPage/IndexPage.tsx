@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 import { CustomContainer } from 'components/CustomContainer/CustomContainer';
 import { sharedValues } from 'utils/sharedValues';
@@ -19,6 +20,9 @@ export default function IndexPage(props: Props) {
       <Wrapper>
         <CustomContainer containerSettings={sharedValues.containers.normal}>
           <p>{name}</p>
+          <Link passHref href="/letter-sandbox">
+            <a>Go to letter sandbox</a>
+          </Link>
         </CustomContainer>
       </Wrapper>
     </>
