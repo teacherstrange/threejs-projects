@@ -75,7 +75,7 @@ export default class Document extends NextDocument {
           <script
             dangerouslySetInnerHTML={{
               __html: `(${switchColorsBasedOnColorMode.toString()})({themeValues:'${JSON.stringify(
-                THEME_VALUES
+                THEME_VALUES,
               )}'})`,
             }}
           />
