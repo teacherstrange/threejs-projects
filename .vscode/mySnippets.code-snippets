@@ -1,0 +1,112 @@
+{
+  "Typescript React Function Component": {
+    "prefix": "rc",
+    "body": [
+      "import React, {memo} from 'react'",
+      "",
+      "interface ${TM_FILENAME_BASE}Props {$1}",
+      "",
+      "export const $TM_FILENAME_BASE = memo<${TM_FILENAME_BASE}Props>((props) => {",
+      "const { children } = props",
+      "\treturn (",
+      "\t\t<>",
+      "\t\t\t<div>test</div>",
+      "\t\t</>",
+      "\t)",
+      "})",
+      "",
+      "${TM_FILENAME_BASE}.displayName = '${TM_FILENAME_BASE}'"
+    ],
+    "description": "Typescript React Function Component with memo"
+  },
+  "Switch statement": {
+    "prefix": "ss",
+    "body": [
+      "switch ($1){",
+      "  case '$2' :",
+      "    break",
+      "  default :",
+      "    break",
+      "}"
+    ],
+    "description": "Switch statement"
+  },
+  "use theme colors": {
+    "prefix": "ic",
+    "body": ["import { colors, renderColor } from 'utils/theme/themes';"]
+  },
+  "Console.log": {
+    "prefix": "clg",
+    "body": ["console.log($1)"],
+    "description": "Console log"
+  },
+  "Styled component with framer-motion": {
+    "prefix": "sc",
+    "body": [
+      "import styled from 'styled-components'",
+      "import { motion } from 'framer-motion'",
+      "",
+      "interface Props {}",
+      "",
+      "export const ${TM_FILENAME_BASE} = styled(motion.div)<Props>``"
+    ],
+    "description": "Styled component with framer-motion"
+  },
+  "framer-motion default props": {
+    "prefix": "dp",
+    "body": [
+      "${TM_FILENAME_BASE}.defaultProps = {",
+      " variants: {",
+      "   initial: {},",
+      "   animate: {},",
+      "   exit: {},",
+      " },",
+      " initial: 'initial',",
+      " animate: 'animate',",
+      " exit: 'exit',",
+      " transition: { ",
+      "   ...springSlow,",
+      " },",
+      "}"
+    ],
+    "description": "Inject default props with framer-motion"
+  },
+  "import animation transitions": {
+    "prefix": "it",
+    "body": "import { springSlow } from 'components/Animations/transitions';"
+  },
+  "import animation presets": {
+    "prefix": "ip",
+    "body": "import { slideIn } from 'components/Animations/presets';"
+  },
+  "media import": {
+    "prefix": "im",
+    "body": ["import { media } from 'utils/styled/responsive'"],
+    "description": "Importing media"
+  },
+  "media sharedValues": {
+    "prefix": "is",
+    "body": ["import { sharedValues } from 'utils/styled/sharedValues'"],
+    "description": "Importing sharedValues"
+  },
+  "insert breakpoint": {
+    "prefix": "br",
+    "body": [
+      "${media.custom(sharedValues.containers.$1breakpoint)} {",
+      "",
+      "}"
+    ],
+    "description": "Insert breakpoint to the styled component"
+  },
+  "Use compute value to count vw": {
+    "prefix": "cv",
+    "body": [
+      "$1: ${computeValue({",
+      "\tpixelValue: $2,",
+      "\treferenceWidth: sharedValues.containers.$3.referenceWidth,",
+      "})};",
+      "$4"
+    ],
+    "description": "Use compute value to count vw"
+  }
+}

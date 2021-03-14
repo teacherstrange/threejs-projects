@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "index_pages",
+  "info": {
+    "name": "indexPage",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "infoParagraph": {
+      "type": "richtext",
+      "required": true
+    },
+    "language": {
+      "model": "language"
+    },
+    "head": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page.head"
+    }
+  }
+}

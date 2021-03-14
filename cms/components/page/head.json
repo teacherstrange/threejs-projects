@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_page_heads",
+  "info": {
+    "name": "head",
+    "icon": "list-alt",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "ogType": {
+      "type": "enumeration",
+      "enum": [
+        "webiste",
+        "article"
+      ],
+      "required": true,
+      "default": "webiste"
+    },
+    "ogImage": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "shouldIndex": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}
