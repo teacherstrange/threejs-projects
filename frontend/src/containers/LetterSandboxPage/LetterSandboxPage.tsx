@@ -10,12 +10,16 @@ import { CanvasWrapper } from './styled/CanvasWrapper';
 interface Props {}
 
 export default function LetterSandboxPage(props: Props) {
+  const onItemClick = () => {
+    console.log('item clicked');
+  };
+
   return (
     <>
       <Wrapper>
         <CustomContainer containerSettings={sharedValues.containers.normal}>
           <CanvasWrapper>
-            <LetterSandbox />
+            <LetterSandbox onItemClick={onItemClick} />
           </CanvasWrapper>
         </CustomContainer>
       </Wrapper>

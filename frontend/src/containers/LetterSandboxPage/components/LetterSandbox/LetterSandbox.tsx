@@ -10,12 +10,14 @@ import SandboxScene from './classes/SandboxScene';
 import { Wrapper } from './styled/Wrapper';
 import { RendererWrapper } from './styled/RendererWrapper';
 
-interface LetterSandboxProps {}
+interface LetterSandboxProps {
+  onItemClick?: () => void;
+}
 
 const DT_60FPS = 1000 / 60;
 
 export const LetterSandbox = memo<LetterSandboxProps>(props => {
-  const { children } = props;
+  const { onItemClick } = props;
 
   const camera = useRef(new PerspectiveCamera());
   const renderer = useRef<WebGLRenderer>();
@@ -26,7 +28,6 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
   const lastFrameTime = useRef(0);
 
   const [scene, setScene] = useState<SandboxScene>(null);
-  const [isMouseOver, setIsMouseOver] = useState(false);
 
   useEffect(() => {
     renderer.current = new WebGLRenderer({ antialias: true, alpha: true });
@@ -101,9 +102,6 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
 
     scene.renderer = renderer.current;
     scene.addEventListener('itemclick', onItemClickInternal);
-    scene.addEventListener('itemmouseover', onItemMouseOverInternal);
-    scene.addEventListener('itemmouseout', onItemMouseOutInternal);
-    scene.addEventListener('itemchange', onCurrentItemChangeInternal);
     window.addEventListener('resize', onResize);
     window.addEventListener('visibilitychange', onVisibilityChange);
     rafId = requestAnimationFrame(onFrame);
@@ -111,9 +109,6 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
 
     return () => {
       scene.removeEventListener('itemclick', onItemClickInternal);
-      scene.removeEventListener('itemmouseover', onItemMouseOverInternal);
-      scene.removeEventListener('itemmouseout', onItemMouseOutInternal);
-      scene.removeEventListener('itemchange', onCurrentItemChangeInternal);
       window.removeEventListener('resize', onResize);
       cancelAnimationFrame(rafId);
       scene.dispose();
@@ -130,29 +125,13 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
   };
 
   const onItemClickInternal = (event: Event) => {
-    const item = (event['item'] as SandboxItem3D).item;
-    onItemClick && onItemClick(item);
-  };
-
-  const onItemMouseOverInternal = (event: Event) => {
-    const item = (event['item'] as SandboxItem3D).item;
-    setIsMouseOver(true);
-    onItemMouseOver && onItemMouseOver(item);
-  };
-
-  const onItemMouseOutInternal = (event: Event) => {
-    const item = (event['item'] as SandboxItem3D).item;
-    setIsMouseOver(false);
-    onItemMouseOut(item);
-  };
-  const onCurrentItemChangeInternal = (event: Event) => {
-    const item = (event['item'] as SandboxItem3D)?.item;
-    item && onCurrentItemChange && onCurrentItemChange(item);
+    // const item = (event['item'] as SandboxItem3D).item;
+    onItemClick && onItemClick();
   };
 
   return (
     <>
-      <Wrapper isMouseOver={isMouseOver}>
+      <Wrapper>
         <RendererWrapper ref={refWrapper} />
       </Wrapper>
     </>
