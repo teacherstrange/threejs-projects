@@ -63,12 +63,16 @@ export default class InteractiveScene extends Scene {
     );
     this.raycaster.setFromCamera(mouse, this.camera);
     const intersects = this.raycaster.intersectObjects(this.children, true);
+
     const intersectingObjects: InteractiveObject3D[] = [];
 
     for (let i = 0; i < intersects.length; ++i) {
       const interactiveObject = intersects[i].object[
         'interactiveObject'
       ] as InteractiveObject3D;
+
+      console.log(interactiveObject);
+
       if (interactiveObject) {
         if (fnToCallIfHit) {
           interactiveObject[fnToCallIfHit]();

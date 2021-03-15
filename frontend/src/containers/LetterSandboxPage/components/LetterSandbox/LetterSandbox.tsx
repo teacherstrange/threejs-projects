@@ -113,6 +113,7 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
       cancelAnimationFrame(rafId);
       scene.dispose();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scene]);
 
   const refWrapper = (el: HTMLElement) => {
@@ -125,8 +126,9 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
   };
 
   const onItemClickInternal = (event: Event) => {
+    console.log('XD');
     // const item = (event['item'] as SandboxItem3D).item;
-    onItemClick && onItemClick();
+    // onItemClick && onItemClick(item);
   };
 
   return (

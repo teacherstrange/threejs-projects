@@ -54,6 +54,7 @@ export default class SandboxScene extends InteractiveScene {
   }
 
   onItemClick = (event: Event) => {
+    console.log('here');
     this.dispatchEvent({ type: 'itemclick', item: event.target });
   };
 }
