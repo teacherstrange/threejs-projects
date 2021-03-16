@@ -11,7 +11,7 @@ export default class SandboxScene extends InteractiveScene {
 
   textureLoader = new THREE.TextureLoader();
   matcapTexture = this.textureLoader.load('/textures/matcaps/4.png');
-  material = new THREE.MeshMatcapMaterial({ matcap: this.matcapTexture });
+  material = new THREE.MeshBasicMaterial();
 
   fontLoader = new THREE.FontLoader();
   myFont;

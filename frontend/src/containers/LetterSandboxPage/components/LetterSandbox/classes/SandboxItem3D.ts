@@ -8,7 +8,6 @@ export default class SandboxItem3D extends InteractiveObject3D {
 
   constructor(font, letter, material) {
     super();
-
     this.setup(font, letter, material);
   }
 
@@ -26,7 +25,12 @@ export default class SandboxItem3D extends InteractiveObject3D {
     };
 
     const geometry = new THREE.TextBufferGeometry(letter, fontOption);
+    // const geometry = new THREE.SphereBufferGeometry();
+
+    // material.wireframe = true;
+    material.color = new THREE.Color('#ff0000');
     const mesh = new THREE.Mesh(geometry, material);
+
     this.setColliderMesh(mesh);
     mesh.position.set(
       Math.random() * 15,
