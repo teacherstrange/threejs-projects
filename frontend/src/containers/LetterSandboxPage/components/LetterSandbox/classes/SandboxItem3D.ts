@@ -16,26 +16,26 @@ export default class SandboxItem3D extends InteractiveObject3D {
       font: font,
       size: 1,
       height: 0.4,
-      curveSegments: 24,
+      curveSegments: 1,
       bevelEnabled: true,
-      bevelThickness: 0.9,
+      bevelThickness: 0,
       bevelSize: 0,
       bevelOffset: 0,
-      bevelSegments: 10,
+      bevelSegments: 1,
     };
 
     const geometry = new THREE.TextBufferGeometry(letter, fontOption);
     // const geometry = new THREE.SphereBufferGeometry();
 
     // material.wireframe = true;
-    material.color = new THREE.Color('#ff0000');
+    // material.color = new THREE.Color('#ff0000');
     const mesh = new THREE.Mesh(geometry, material);
 
     this.setColliderMesh(mesh);
     mesh.position.set(
-      Math.random() * 15,
-      Math.random() * 15,
-      Math.random() * 15 * 0,
+      (Math.random() - 0.5) * Math.random() * 30,
+      (Math.random() - 0.5) * Math.random() * 30,
+      (Math.random() - 0.5) * Math.random() * 30 * 1,
     );
     this.scale.set(0, 0, 0);
     this.animateScale(1.2);
