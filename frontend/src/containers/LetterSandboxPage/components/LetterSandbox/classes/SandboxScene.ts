@@ -1,55 +1,26 @@
 import * as THREE from 'three';
 
-const fontURL = '/fonts/rancher.json';
-
 import InteractiveScene from './InteractiveScene';
 import SandboxItem3D from './SandboxItem3D';
+
+const fontURL = '/fonts/rancher.json';
 
 export default class SandboxScene extends InteractiveScene {
   items3D: SandboxItem3D[] = [];
   maxAnisotropy: number;
+
   fontLoader = new THREE.FontLoader();
-  textureLoader = new THREE.TextureLoader();
-  letters;
+  myFont;
+  loadTheFont = this.fontLoader.load(fontURL, f => {
+    this.myFont = f;
+  });
 
   constructor(camera: THREE.PerspectiveCamera, maxAnisotropy: number) {
     super(camera);
     this.maxAnisotropy = maxAnisotropy;
-    this.letters = [];
-
-    this.fontLoader.load(fontURL, f => {
-      this.setup(f);
-    });
   }
 
-  setup(f) {
-    const fontOption = {
-      font: f,
-      size: 3,
-      height: 0.4,
-      curveSegments: 24,
-      bevelEnabled: true,
-      bevelThickness: 0.9,
-      bevelSize: 0,
-      bevelOffset: 0,
-      bevelSegments: 10,
-    };
-
-    const matcapTexture = this.textureLoader.load('/textures/matcaps/4.png');
-    const material = new THREE.MeshMatcapMaterial();
-    material.matcap = matcapTexture;
-    const geometry = new THREE.TextBufferGeometry('le font', fontOption);
-    const mesh = new THREE.Mesh(geometry, material);
-
-    this.add(mesh);
-  }
-
-  dispose() {
-    super.dispose();
-    this.items3D = [];
-  }
-
-  set items(items) {
+  set newLetter(letter) {
     this.items3D.forEach(item3D => {
       this.remove(item3D);
       item3D.dispose();
@@ -57,15 +28,21 @@ export default class SandboxScene extends InteractiveScene {
     });
     this.items3D = [];
 
-    items &&
-      items.forEach((item, index) => {
-        const item3D = new SandboxItem3D();
-        item3D.addEventListener('click', this.onItemClick);
-        this.items3D.push(item3D);
-        this.add(item3D);
-      });
+    if (!letter) {
+      return;
+    }
 
-    this.animateIn();
+    const item3D = new SandboxItem3D(this.myFont, letter);
+    item3D.addEventListener('click', this.onItemClick);
+
+    console.log(item3D);
+    // this.items3D.push(item3D);
+    this.add(item3D);
+  }
+
+  dispose() {
+    super.dispose();
+    this.items3D = [];
   }
 
   set filter(filter: string) {}

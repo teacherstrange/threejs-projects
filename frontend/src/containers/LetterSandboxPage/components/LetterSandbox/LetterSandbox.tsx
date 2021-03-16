@@ -1,5 +1,5 @@
 import React, { memo, useRef, useEffect, useState } from 'react';
-import { PerspectiveCamera, WebGLRenderer } from 'three';
+import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
 import SandboxItem3D from './classes/SandboxItem3D';
@@ -19,8 +19,8 @@ const DT_60FPS = 1000 / 60;
 export const LetterSandbox = memo<LetterSandboxProps>(props => {
   const { onItemClick } = props;
 
-  const camera = useRef(new PerspectiveCamera());
-  const renderer = useRef<WebGLRenderer>();
+  const camera = useRef(new THREE.PerspectiveCamera());
+  const renderer = useRef<THREE.WebGLRenderer>();
 
   const rendererWrapperEl = useRef<HTMLElement>();
 
@@ -30,7 +30,10 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
   const [scene, setScene] = useState<SandboxScene>(null);
 
   useEffect(() => {
-    renderer.current = new WebGLRenderer({ antialias: true, alpha: true });
+    renderer.current = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+    });
     controls.current = new OrbitControls(
       camera.current,
       rendererWrapperEl.current,
@@ -59,8 +62,6 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
       return () => {};
     }
 
-    scene.items = [{ name: 'me' }, { name: 'you' }];
-
     let rafId: number;
     let isResumed = true;
 
@@ -88,7 +89,8 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
       renderer.current.setSize(bounds.width, bounds.height);
       camera.current.aspect = bounds.width / bounds.height;
       camera.current.updateProjectionMatrix();
-      camera.current.position.set(-10, 10, 10);
+      camera.current.position.set(0, 0, 20);
+      // camera.current.lookAt(new THREE.Vector3(0, 0, 0));
     };
 
     const onVisibilityChange = () => {
@@ -104,12 +106,15 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
     scene.addEventListener('itemclick', onItemClickInternal);
     window.addEventListener('resize', onResize);
     window.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('keypress', onKeyPressInternal);
     rafId = requestAnimationFrame(onFrame);
     onResize();
 
     return () => {
       scene.removeEventListener('itemclick', onItemClickInternal);
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('keypress', onKeyPressInternal);
       cancelAnimationFrame(rafId);
       scene.dispose();
     };
@@ -123,6 +128,10 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
         rendererWrapperEl.current.appendChild(renderer.current.domElement);
       }
     }
+  };
+
+  const onKeyPressInternal = (event: KeyboardEvent) => {
+    scene.newLetter = event.key;
   };
 
   const onItemClickInternal = (event: Event) => {

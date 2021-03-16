@@ -3,14 +3,35 @@ import * as THREE from 'three';
 import InteractiveObject3D from './InteractiveObject3D';
 
 export default class SandboxItem3D extends InteractiveObject3D {
-  constructor() {
+  textureLoader = new THREE.TextureLoader();
+  matcapTexture = this.textureLoader.load('/textures/matcaps/4.png');
+  material = new THREE.MeshMatcapMaterial({ matcap: this.matcapTexture });
+
+  constructor(font, letter) {
     super();
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    this.add(cube);
-    this.setColliderMesh(cube);
+    this.setup(font, letter);
+  }
+
+  setup(font, letter) {
+    const fontOption = {
+      font: font,
+      size: 1,
+      height: 0.4,
+      curveSegments: 24,
+      bevelEnabled: true,
+      bevelThickness: 0.9,
+      bevelSize: 0,
+      bevelOffset: 0,
+      bevelSegments: 10,
+    };
+
+    const geometry = new THREE.TextBufferGeometry(letter, fontOption);
+    const mesh = new THREE.Mesh(geometry, this.material);
+
+    mesh.position.set(Math.random() * 5, Math.random() * 5, Math.random() * 5);
+
+    this.add(mesh);
   }
 
   dispose() {
