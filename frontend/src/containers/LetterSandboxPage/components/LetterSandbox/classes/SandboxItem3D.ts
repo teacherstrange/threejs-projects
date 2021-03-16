@@ -1,19 +1,18 @@
 import * as THREE from 'three';
+import TWEEN from '@tweenjs/tween.js';
 
 import InteractiveObject3D from './InteractiveObject3D';
 
 export default class SandboxItem3D extends InteractiveObject3D {
-  textureLoader = new THREE.TextureLoader();
-  matcapTexture = this.textureLoader.load('/textures/matcaps/4.png');
-  material = new THREE.MeshMatcapMaterial({ matcap: this.matcapTexture });
+  scaleTween;
 
-  constructor(font, letter) {
+  constructor(font, letter, material) {
     super();
 
-    this.setup(font, letter);
+    this.setup(font, letter, material);
   }
 
-  setup(font, letter) {
+  setup(font, letter, material) {
     const fontOption = {
       font: font,
       size: 1,
@@ -27,11 +26,28 @@ export default class SandboxItem3D extends InteractiveObject3D {
     };
 
     const geometry = new THREE.TextBufferGeometry(letter, fontOption);
-    const mesh = new THREE.Mesh(geometry, this.material);
+    const mesh = new THREE.Mesh(geometry, material);
     this.setColliderMesh(mesh);
-    mesh.position.set(Math.random() * 5, Math.random() * 5, Math.random() * 5);
-
+    mesh.position.set(
+      Math.random() * 15,
+      Math.random() * 15,
+      Math.random() * 15 * 0,
+    );
+    this.scale.set(0, 0, 0);
+    this.animateScale(1.2);
     this.add(mesh);
+  }
+
+  animateScale(scale: number) {
+    if (this.scaleTween) {
+      this.scaleTween.stop();
+    }
+
+    this.scaleTween = new TWEEN.Tween(this.scale)
+      .to({ x: scale, y: scale, z: scale }, 1200)
+      .easing(TWEEN.Easing.Exponential.Out);
+
+    this.scaleTween.start();
   }
 
   dispose() {

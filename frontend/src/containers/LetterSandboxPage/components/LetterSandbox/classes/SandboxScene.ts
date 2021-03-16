@@ -9,6 +9,10 @@ export default class SandboxScene extends InteractiveScene {
   items3D: SandboxItem3D[] = [];
   maxAnisotropy: number;
 
+  textureLoader = new THREE.TextureLoader();
+  matcapTexture = this.textureLoader.load('/textures/matcaps/4.png');
+  material = new THREE.MeshMatcapMaterial({ matcap: this.matcapTexture });
+
   fontLoader = new THREE.FontLoader();
   myFont;
   loadTheFont = this.fontLoader.load(fontURL, f => {
@@ -32,7 +36,7 @@ export default class SandboxScene extends InteractiveScene {
       return;
     }
 
-    const item3D = new SandboxItem3D(this.myFont, letter);
+    const item3D = new SandboxItem3D(this.myFont, letter, this.material);
     item3D.addEventListener('click', this.onItemClick);
     // this.items3D.push(item3D);
     this.add(item3D);
