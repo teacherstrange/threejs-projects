@@ -1,16 +1,47 @@
 import * as THREE from 'three';
 
+const fontURL = '/fonts/rancher.json';
+
 import InteractiveScene from './InteractiveScene';
 import SandboxItem3D from './SandboxItem3D';
 
 export default class SandboxScene extends InteractiveScene {
-  isEnabled = false;
   items3D: SandboxItem3D[] = [];
   maxAnisotropy: number;
+  fontLoader = new THREE.FontLoader();
+  textureLoader = new THREE.TextureLoader();
+  letters;
 
   constructor(camera: THREE.PerspectiveCamera, maxAnisotropy: number) {
     super(camera);
     this.maxAnisotropy = maxAnisotropy;
+    this.letters = [];
+
+    this.fontLoader.load(fontURL, f => {
+      this.setup(f);
+    });
+  }
+
+  setup(f) {
+    const fontOption = {
+      font: f,
+      size: 3,
+      height: 0.4,
+      curveSegments: 24,
+      bevelEnabled: true,
+      bevelThickness: 0.9,
+      bevelSize: 0,
+      bevelOffset: 0,
+      bevelSegments: 10,
+    };
+
+    const matcapTexture = this.textureLoader.load('/textures/matcaps/4.png');
+    const material = new THREE.MeshMatcapMaterial();
+    material.matcap = matcapTexture;
+    const geometry = new THREE.TextBufferGeometry('le font', fontOption);
+    const mesh = new THREE.Mesh(geometry, material);
+
+    this.add(mesh);
   }
 
   dispose() {

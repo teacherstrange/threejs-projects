@@ -88,7 +88,7 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
       renderer.current.setSize(bounds.width, bounds.height);
       camera.current.aspect = bounds.width / bounds.height;
       camera.current.updateProjectionMatrix();
-      camera.current.position.z = 3;
+      camera.current.position.set(-10, 10, 10);
     };
 
     const onVisibilityChange = () => {
