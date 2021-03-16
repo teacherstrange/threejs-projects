@@ -71,8 +71,6 @@ export default class InteractiveScene extends Scene {
         'interactiveObject'
       ] as InteractiveObject3D;
 
-      console.log(interactiveObject);
-
       if (interactiveObject) {
         if (fnToCallIfHit) {
           interactiveObject[fnToCallIfHit]();

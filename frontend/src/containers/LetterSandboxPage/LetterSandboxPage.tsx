@@ -11,7 +11,7 @@ interface Props {}
 
 export default function LetterSandboxPage(props: Props) {
   const onItemClick = () => {
-    console.log('item clicked');
+    console.log('item clicked :D');
   };
 
   return (
