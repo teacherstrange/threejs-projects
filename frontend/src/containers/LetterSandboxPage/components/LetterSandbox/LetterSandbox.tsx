@@ -135,9 +135,7 @@ export const LetterSandbox = memo<LetterSandboxProps>(props => {
   };
 
   const onItemClickInternal = (event: Event) => {
-    console.log(event['item']);
-    // const item = event['item'] as SandboxItem3D;
-    // onItemClick && onItemClick(item);
+    event['item'].animateClicked();
   };
 
   return (

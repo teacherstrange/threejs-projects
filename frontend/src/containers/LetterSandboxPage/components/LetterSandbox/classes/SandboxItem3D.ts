@@ -5,6 +5,8 @@ import InteractiveObject3D from './InteractiveObject3D';
 
 export default class SandboxItem3D extends InteractiveObject3D {
   scaleTween;
+  clickedTween;
+  animateOutTween;
 
   constructor(font, letter, material) {
     super();
@@ -25,20 +27,19 @@ export default class SandboxItem3D extends InteractiveObject3D {
     };
 
     const geometry = new THREE.TextBufferGeometry(letter, fontOption);
-    // const geometry = new THREE.SphereBufferGeometry();
-
-    // material.wireframe = true;
-    // material.color = new THREE.Color('#ff0000');
     const mesh = new THREE.Mesh(geometry, material);
 
     this.setColliderMesh(mesh);
+
     mesh.position.set(
       (Math.random() - 0.5) * Math.random() * 30,
       (Math.random() - 0.5) * Math.random() * 30,
       (Math.random() - 0.5) * Math.random() * 30 * 1,
     );
+
     this.scale.set(0, 0, 0);
     this.animateScale(1.2);
+
     this.add(mesh);
   }
 
@@ -52,6 +53,35 @@ export default class SandboxItem3D extends InteractiveObject3D {
       .easing(TWEEN.Easing.Exponential.Out);
 
     this.scaleTween.start();
+  }
+
+  animateClicked() {
+    if (this.clickedTween) {
+      this.clickedTween.stop();
+    }
+
+    this.clickedTween = new TWEEN.Tween(this.scale)
+      .to({ x: 2, y: 2, z: 2 }, 1200)
+      .easing(TWEEN.Easing.Exponential.Out);
+
+    setTimeout(() => {
+      this.dispose();
+      this.remove();
+    }, 1200);
+
+    this.clickedTween.start();
+  }
+
+  animateOut() {
+    if (this.animateOutTween) {
+      this.animateOutTween.stop();
+    }
+
+    this.animateOutTween = new TWEEN.Tween(this.scale)
+      .to({ x: 0, y: 0, z: 0 }, 1200)
+      .easing(TWEEN.Easing.Exponential.Out);
+
+    this.animateOutTween.start();
   }
 
   dispose() {

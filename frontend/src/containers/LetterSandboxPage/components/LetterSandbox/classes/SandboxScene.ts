@@ -38,8 +38,15 @@ export default class SandboxScene extends InteractiveScene {
 
     const item3D = new SandboxItem3D(this.myFont, letter, this.material);
     item3D.addEventListener('click', this.onItemClick);
-    // this.items3D.push(item3D);
     this.add(item3D);
+
+    setTimeout(() => {
+      item3D.animateOut();
+    }, 1500);
+
+    setTimeout(() => {
+      this.remove(item3D);
+    }, 1500 + 1200);
   }
 
   dispose() {
