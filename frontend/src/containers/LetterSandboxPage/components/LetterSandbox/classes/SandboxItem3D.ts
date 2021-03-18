@@ -27,18 +27,19 @@ export default class SandboxItem3D extends InteractiveObject3D {
     };
 
     const geometry = new THREE.TextBufferGeometry(letter, fontOption);
+
     const mesh = new THREE.Mesh(geometry, material);
 
     this.setColliderMesh(mesh);
 
-    mesh.position.set(
+    this.position.set(
       (Math.random() - 0.5) * Math.random() * 30,
       (Math.random() - 0.5) * Math.random() * 30,
       (Math.random() - 0.5) * Math.random() * 30 * 1,
     );
 
     this.scale.set(0, 0, 0);
-    this.animateScale(1.2);
+    this.animateScale(1.5);
 
     this.add(mesh);
   }
