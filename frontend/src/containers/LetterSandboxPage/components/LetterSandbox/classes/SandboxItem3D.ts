@@ -28,6 +28,8 @@ export default class SandboxItem3D extends InteractiveObject3D {
 
     const geometry = new THREE.TextBufferGeometry(letter, fontOption);
 
+    geometry.center(); // the object scales to its center
+
     const mesh = new THREE.Mesh(geometry, material);
 
     this.setColliderMesh(mesh);
