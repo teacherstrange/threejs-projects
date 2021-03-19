@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 import * as dat from 'dat.gui';
 
+import Time from './classes/utils/Time';
+
 // eslint-disable-next-line node/no-unpublished-import
 import { OrbitControls } from '../../../../../node_modules/three/examples/jsm/controls/OrbitControls.js';
 import { Wrapper } from './styled/Wrapper';
@@ -12,28 +14,22 @@ interface GravityObjectsProps {
   onItemClick?: () => void;
 }
 
-interface Config {
+export interface Config {
   debug?: boolean;
 }
 
 const GravityObjects = memo<GravityObjectsProps>(props => {
   const { onItemClick } = props;
-  const DT_60FPS = 1000 / 60;
+
   const camera = useRef(null);
   const scene = useRef(null);
   const renderer = useRef(null);
   const canvasRef = useRef(null);
   const canvasWrapperRef = useRef(null);
   const config = useRef<Config>({});
-  const debug = useRef(null);
-
-  const frameRafReference = useRef<ReturnType<typeof requestAnimationFrame>>(
-    null,
-  );
-
+  const debug = useRef<dat.GUI>(null);
+  const appTime = useRef(new Time());
   const controls = useRef(null);
-  const lastFrameTime = useRef(0);
-  const isResumed = useRef(false);
 
   useEffect(() => {
     setCamera();
@@ -42,27 +38,13 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
     setConfig();
     setDebug();
 
-    const onFrame = (time: number) => {
-      frameRafReference.current = requestAnimationFrame(onFrame);
-      TWEEN.update(time);
-
-      if (isResumed.current) {
-        lastFrameTime.current = time;
-        isResumed.current = false;
-        return;
-      }
-
-      const dt = time - lastFrameTime.current;
-      lastFrameTime.current = time;
-      const slowDownFactor = Math.min(Math.max(dt / DT_60FPS, 1), 1);
-      // scene.current.update(time, dt, slowDownFactor);
+    appTime.current.on('tick', () => {
       controls.current.update();
       renderer.current.render(scene.current, camera.current);
-    };
+    });
 
     const onResize = () => {
       const bounds = canvasWrapperRef.current.getBoundingClientRect();
-
       renderer.current.setPixelRatio(
         Math.min(Math.max(window.devicePixelRatio, 1.5), 2),
       );
@@ -73,23 +55,20 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
 
     const onVisibilityChange = () => {
       if (document.hidden) {
-        cancelAnimationFrame(frameRafReference.current);
+        appTime.current.stop();
       } else {
-        isResumed.current = true;
-        frameRafReference.current = requestAnimationFrame(onFrame);
+        appTime.current.resume();
       }
     };
 
     window.addEventListener('resize', onResize);
     window.addEventListener('visibilitychange', onVisibilityChange);
-    frameRafReference.current = requestAnimationFrame(onFrame);
     onResize();
 
     return () => {
+      destructor();
       window.removeEventListener('resize', onResize);
       window.removeEventListener('visibilitychange', onVisibilityChange);
-      cancelAnimationFrame(frameRafReference.current);
-      scene.current.dispose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -122,6 +101,10 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     const cube = new THREE.Mesh(geometry, material);
     scene.current.add(cube);
+
+    appTime.current.on('tick', () => {
+      cube.position.x += 0.02 * appTime.current.slowDownFactor;
+    });
   };
 
   const setConfig = () => {
@@ -135,9 +118,10 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
   };
 
   const destructor = () => {
-    camera.current.orbitControls.dispose();
+    camera.current.orbitControls && camera.current.orbitControls.dispose();
+    appTime.current.stop();
+    debug.current && debug.current.destroy();
     renderer.current.dispose();
-    debug.current.destroy();
   };
 
   return (

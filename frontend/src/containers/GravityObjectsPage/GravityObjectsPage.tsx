@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 import { RevealString } from 'components/Animations/RevealString/RevealString';
 
@@ -30,6 +31,8 @@ export default function GravityObjectsPage(props: Props) {
         <CanvasWrapper>
           <GravityObjects onItemClick={onItemClick} />
         </CanvasWrapper>
+
+        <Link href="/letter-sandbox">dsaf</Link>
       </Wrapper>
     </>
   );
