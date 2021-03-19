@@ -1,6 +1,5 @@
-import React, { memo, useRef, useEffect, useState } from 'react';
+import React, { memo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import TWEEN from '@tweenjs/tween.js';
 import * as dat from 'dat.gui';
 
 import Time from './classes/utils/Time';
@@ -70,7 +69,6 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
       window.removeEventListener('resize', onResize);
       window.removeEventListener('visibilitychange', onVisibilityChange);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setRenderer = () => {
