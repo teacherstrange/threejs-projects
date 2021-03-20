@@ -2,7 +2,9 @@ import React, { memo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-import Time from './classes/utils/Time';
+import World from './classes/World';
+
+import AppTime from './classes/utils/AppTime';
 
 // eslint-disable-next-line node/no-unpublished-import
 import { OrbitControls } from '../../../../../node_modules/three/examples/jsm/controls/OrbitControls.js';
@@ -27,8 +29,9 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
   const canvasWrapperRef = useRef(null);
   const config = useRef<Config>({});
   const debug = useRef<dat.GUI>(null);
-  const appTime = useRef(new Time());
+  const appTime = useRef(new AppTime());
   const controls = useRef(null);
+  const world = useRef(null);
 
   useEffect(() => {
     setCamera();
@@ -95,14 +98,14 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
   };
 
   const setWorld = () => {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.current.add(cube);
-
-    appTime.current.on('tick', () => {
-      cube.position.x += 0.02 * appTime.current.slowDownFactor;
+    world.current = new World({
+      config: config.current,
+      debug: debug.current,
+      appTime: appTime.current,
+      camera: camera.current,
+      renderer: renderer.current,
     });
+    scene.current.add(world.current.container);
   };
 
   const setConfig = () => {

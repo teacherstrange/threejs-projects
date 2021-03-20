@@ -1,39 +1,34 @@
 import * as THREE from 'three';
 
 import { Config } from '../GravityObjects';
-import Time from './utils/Time';
+import AppTime from './utils/AppTime';
 
+import Letter from './Letter';
 import Physics from './Physics.js';
-import Car from './Car.js';
 
 interface WorldProps {
-  config: Config;
-  debug: React.MutableRefObject<any>;
-  resources: any;
-  time: Time;
+  config: any;
+  debug: any;
+  appTime: any;
   camera: any;
   renderer: any;
-  car: any;
 }
 
 export default class World {
-  config;
-  debug;
-  resources;
-  time;
-  camera;
-  renderer;
-  container;
-  axis;
-  physics;
-  car;
-
+  config: any;
+  debug: any;
+  appTime: any;
+  camera: any;
+  renderer: any;
+  container: THREE.Object3D;
+  axis: THREE.AxesHelper;
+  letter: Letter;
+  physics: any;
   constructor(_options: WorldProps) {
     // Options
     this.config = _options.config;
     this.debug = _options.debug;
-    this.resources = _options.resources;
-    this.time = _options.time;
+    this.appTime = _options.appTime;
     this.camera = _options.camera;
     this.renderer = _options.renderer;
 
@@ -45,8 +40,8 @@ export default class World {
   }
 
   start() {
-    this.setPhysics();
-    this.setCar();
+    // this.setPhysics();
+    this.setLetter();
   }
 
   setAxes() {
@@ -54,24 +49,23 @@ export default class World {
     this.container.add(this.axis);
   }
 
-  setPhysics() {
-    this.physics = new Physics({
-      config: this.config,
-      debug: this.debug,
-      time: this.time,
-    });
-    this.container.add(this.physics.models.container);
-  }
+  // setPhysics() {
+  //   this.physics = new Physics({
+  //     config: this.config,
+  //     debug: this.debug,
+  //     appTime: this.appTime,
+  //   });
+  //   this.container.add(this.physics.models.container);
+  // }
 
-  setCar() {
-    this.car = new Car({
-      time: this.time,
-      resources: this.resources,
+  setLetter() {
+    this.letter = new Letter({
+      appTime: this.appTime,
       physics: this.physics,
       renderer: this.renderer,
       camera: this.camera,
       config: this.config,
     });
-    this.container.add(this.car.container);
+    this.container.add(this.letter.container);
   }
 }
