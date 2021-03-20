@@ -24,13 +24,14 @@ export default class World {
   axis: THREE.AxesHelper;
   letter: Letter;
   physics: any;
-  constructor(_options: WorldProps) {
+
+  constructor(options: WorldProps) {
     // Options
-    this.config = _options.config;
-    this.debug = _options.debug;
-    this.appTime = _options.appTime;
-    this.camera = _options.camera;
-    this.renderer = _options.renderer;
+    this.config = options.config;
+    this.debug = options.debug;
+    this.appTime = options.appTime;
+    this.camera = options.camera;
+    this.renderer = options.renderer;
 
     // Set up
     this.container = new THREE.Object3D();
@@ -40,7 +41,7 @@ export default class World {
   }
 
   start() {
-    // this.setPhysics();
+    this.setPhysics();
     this.setLetter();
   }
 
@@ -49,14 +50,14 @@ export default class World {
     this.container.add(this.axis);
   }
 
-  // setPhysics() {
-  //   this.physics = new Physics({
-  //     config: this.config,
-  //     debug: this.debug,
-  //     appTime: this.appTime,
-  //   });
-  //   this.container.add(this.physics.models.container);
-  // }
+  setPhysics() {
+    this.physics = new Physics({
+      config: this.config,
+      debug: this.debug,
+      appTime: this.appTime,
+    });
+    this.container.add(this.physics.models.container);
+  }
 
   setLetter() {
     this.letter = new Letter({

@@ -4,24 +4,24 @@ import * as THREE from 'three';
 interface PhysicsProps {
   config: any;
   debug: any;
-  time: any;
+  appTime: any;
 }
 
 export default class Physics {
   config: any;
   debug: any;
-  time: any;
+  appTime: any;
   world: any;
   debugFolder: any;
   materials: {};
   constructor(_options: PhysicsProps) {
     this.config = _options.config;
     this.debug = _options.debug;
-    this.time = _options.time;
+    this.appTime = _options.appTime;
 
     this.setWorld();
-    this.time.on('tick', () => {
-      this.world.step(1 / 60, this.time.delta, 3);
+    this.appTime.on('tick', () => {
+      this.world.step(1 / 60, this.appTime.delta, 3);
     });
   }
 
