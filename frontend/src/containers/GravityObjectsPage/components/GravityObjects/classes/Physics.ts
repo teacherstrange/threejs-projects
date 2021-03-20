@@ -1,4 +1,4 @@
-import CANNON from 'cannon-es';
+import * as CANNON from 'cannon-es';
 import * as THREE from 'three';
 
 interface PhysicsProps {
@@ -14,12 +14,15 @@ export default class Physics {
   world: any;
   debugFolder: any;
   materials: {};
-  constructor(_options: PhysicsProps) {
-    this.config = _options.config;
-    this.debug = _options.debug;
-    this.appTime = _options.appTime;
+  models: {};
+
+  constructor(options: PhysicsProps) {
+    this.config = options.config;
+    this.debug = options.debug;
+    this.appTime = options.appTime;
 
     this.setWorld();
+    this.setModels();
     this.appTime.on('tick', () => {
       this.world.step(1 / 60, this.appTime.delta, 3);
     });
@@ -43,6 +46,11 @@ export default class Physics {
     }
 
     // this.setMaterials();
+  }
+
+  setModels() {
+    this.models = {};
+    this.models.container = new THREE.Object3D();
   }
 
   // setMaterials() {

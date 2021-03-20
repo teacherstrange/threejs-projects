@@ -1,10 +1,7 @@
 import * as THREE from 'three';
 
-import { Config } from '../GravityObjects';
-import AppTime from './utils/AppTime';
-
 import Letter from './Letter';
-import Physics from './Physics.js';
+import Physics from './Physics';
 
 interface WorldProps {
   config: any;
