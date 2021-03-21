@@ -55,7 +55,7 @@ export default class UserInput {
   onMouseUp = () => {
     this.isMoving = false;
 
-    this.currentLetter.onStopMove();
+    this.currentLetter && this.currentLetter.onStopMove();
   };
 
   startMoveObject = (obj, startPoint) => {

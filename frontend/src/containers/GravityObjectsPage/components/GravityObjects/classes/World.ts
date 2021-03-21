@@ -2,7 +2,9 @@ import * as THREE from 'three';
 
 import Letter from './Letter';
 import Physics from './Physics';
+import Floor from './Floor';
 import UserInput from './UserInput';
+import Lights from './Lights';
 
 interface WorldProps {
   config: any;
@@ -39,7 +41,7 @@ export default class World {
     this.container = new THREE.Object3D();
 
     this.container.matrixAutoUpdate = false;
-    this.setAxes();
+    // this.setAxes();
     this.start();
     this.userInput = new UserInput({
       bounds: this.bounds,
@@ -51,6 +53,8 @@ export default class World {
   start() {
     this.setPhysics();
     this.setLetter();
+    this.setFloor();
+    this.setLights();
   }
 
   setAxes() {
@@ -68,7 +72,7 @@ export default class World {
   }
 
   setLetter() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 30; i++) {
       const letter = new Letter({
         appTime: this.appTime,
         physics: this.physics,
@@ -79,5 +83,30 @@ export default class World {
       this.letters.push(letter);
       this.container.add(letter.container);
     }
+  }
+
+  setFloor() {
+    const floor = new Floor({
+      appTime: this.appTime,
+      physics: this.physics,
+      renderer: this.renderer,
+      camera: this.camera,
+      config: this.config,
+    });
+
+    this.container.add(floor.container);
+  }
+
+  setLights() {
+    const lights = new Lights({
+      appTime: this.appTime,
+      physics: this.physics,
+      renderer: this.renderer,
+      camera: this.camera,
+      config: this.config,
+    });
+
+    console.log(lights);
+    this.container.add(lights.container);
   }
 }

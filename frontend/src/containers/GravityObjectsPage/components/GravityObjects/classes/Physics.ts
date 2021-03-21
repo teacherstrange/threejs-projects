@@ -30,9 +30,9 @@ export default class Physics {
 
   setWorld = () => {
     this.world = new CANNON.World();
-    this.world.gravity.set(0, -1, 0);
-    this.world.allowSleep = true;
-    this.world.defaultContactMaterial.friction = 0;
-    this.world.defaultContactMaterial.restitution = 0.2;
+    this.world.gravity.set(0, -9.81, 0);
+    // this.world.allowSleep = true;
+    this.world.defaultContactMaterial.friction = 5;
+    this.world.defaultContactMaterial.restitution = 0.1;
   };
 }

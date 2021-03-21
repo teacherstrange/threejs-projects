@@ -36,9 +36,9 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
 
   useEffect(() => {
     setBounds();
-
-    setRenderer();
     setCamera();
+    setRenderer();
+
     setWorld();
     setConfig();
     setDebug();
@@ -90,6 +90,8 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
       alpha: true,
     });
 
+    renderer.current.shadowMap.enabled = true;
+
     renderer.current.setClearColor(0xffffff, 1);
     renderer.current.physicallyCorrectLights = true;
     renderer.current.gammaFactor = 2.2;
@@ -100,25 +102,25 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
   };
 
   const setCamera = () => {
-    const aspectRatio = bounds.current.width / bounds.current.height;
+    // const aspectRatio = bounds.current.width / bounds.current.height;
 
-    const distance = 20;
+    // const distance = 20;
 
-    camera.current = new THREE.OrthographicCamera(
-      -distance * aspectRatio,
-      distance * aspectRatio,
-      distance,
-      -distance,
-      -1,
-      100,
-    );
-    camera.current.position.set(0, 0, 1);
+    // camera.current = new THREE.OrthographicCamera(
+    //   -distance * aspectRatio,
+    //   distance * aspectRatio,
+    //   distance,
+    //   -distance,
+    //   -1,
+    //   100,
+    // );
+    // camera.current.position.set(0, 0, 1);
     // camera.current.zoom = 1;
     // camera.current.lookAt(new THREE.Vector3(0, 0, 0));
     // camera.current.position.z = 30;
 
-    // camera.current = new THREE.PerspectiveCamera();
-    // camera.current.position.set(0, 0, 40);
+    camera.current = new THREE.PerspectiveCamera();
+    camera.current.position.set(0, 2, 10);
   };
 
   const setWorld = () => {
