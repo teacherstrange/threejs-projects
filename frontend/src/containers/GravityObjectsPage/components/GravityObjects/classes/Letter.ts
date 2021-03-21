@@ -16,6 +16,8 @@ export default class Letter {
   spherePhysicBody;
   sphereBody;
   startMovePoint: any;
+  isMoving: boolean;
+  moveVector: THREE.Vector3;
 
   constructor(_options) {
     // Options
@@ -71,11 +73,21 @@ export default class Letter {
 
   update = () => {
     this.appTime.on('tick', () => {
+      if (this.isMoving) {
+        this.moveVector &&
+          this.spherePhysicBody.position.set(
+            this.moveVector.x,
+            this.moveVector.y,
+            this.moveVector.z,
+          );
+      }
+
       this.sphereBody.position.copy(this.spherePhysicBody.position);
     });
   };
 
   onStartMove = startPoint => {
+    this.isMoving = true;
     const newVec = new THREE.Vector3(startPoint.x, startPoint.y, 0);
     const ballPos = this.spherePhysicBody.position;
 
@@ -86,12 +98,16 @@ export default class Letter {
     );
   };
 
+  onStopMove = () => {
+    this.isMoving = false;
+  };
+
   performMove = mouse => {
     const vector = new THREE.Vector3(mouse.x, mouse.y, 0).unproject(
       this.camera,
     );
 
-    this.spherePhysicBody.position.set(
+    this.moveVector = new THREE.Vector3(
       vector.x + this.startMovePoint.x,
       vector.y + this.startMovePoint.y,
       0,
