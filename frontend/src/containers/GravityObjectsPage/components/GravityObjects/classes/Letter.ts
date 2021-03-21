@@ -15,6 +15,7 @@ export default class Letter {
   debugFolder: any;
   spherePhysicBody;
   sphereBody;
+  startMovePoint: any;
 
   constructor(_options) {
     // Options
@@ -74,8 +75,15 @@ export default class Letter {
     });
   };
 
-  onStartMove = () => {
-    console.log(this.spherePhysicBody.position);
+  onStartMove = startPoint => {
+    const newVec = new THREE.Vector3(startPoint.x, startPoint.y, 0);
+    const ballPos = this.spherePhysicBody.position;
+
+    this.startMovePoint = new THREE.Vector3(
+      ballPos.x - newVec.x,
+      ballPos.y - newVec.y,
+      ballPos.z,
+    );
   };
 
   performMove = mouse => {
@@ -84,8 +92,8 @@ export default class Letter {
     );
 
     this.spherePhysicBody.position.set(
-      vector.x * this.camera.position.z * 5,
-      vector.y * this.camera.position.z * 5,
+      vector.x + this.startMovePoint.x,
+      vector.y + this.startMovePoint.y,
       0,
     );
   };

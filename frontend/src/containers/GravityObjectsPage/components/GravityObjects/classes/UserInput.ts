@@ -56,11 +56,11 @@ export default class UserInput {
     this.isMoving = false;
   };
 
-  startMoveObject = obj => {
+  startMoveObject = (obj, startPoint) => {
     this.isMoving = true;
 
     this.currentLetter = obj;
-    this.currentLetter.onStartMove();
+    this.currentLetter.onStartMove(startPoint);
   };
 
   onMouseDown = event => {
@@ -82,6 +82,7 @@ export default class UserInput {
       -((y - this.bounds.y) / this.bounds.height) * 2 + 1,
     );
     this.raycaster.setFromCamera(mouse, this.camera);
+
     let letterContainers = [];
     this.letters.forEach(letter => {
       letterContainers = letterContainers.concat(letter.container);
@@ -94,7 +95,7 @@ export default class UserInput {
           this.letters[i].container.children[0].uuid ===
           intersects[0].object.uuid
         ) {
-          this.startMoveObject(this.letters[i]);
+          this.startMoveObject(this.letters[i], intersects[0].point);
         }
       }
     }
