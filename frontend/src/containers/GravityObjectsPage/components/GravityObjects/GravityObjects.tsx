@@ -101,25 +101,20 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
 
   const setCamera = () => {
     const aspectRatio = bounds.current.width / bounds.current.height;
-    const width = bounds.current.width;
-    const height = bounds.current.height;
-    const distance = 1;
+
+    const distance = 20;
 
     camera.current = new THREE.OrthographicCamera(
-      width / -2,
-      width / 2,
-      height / 2,
-      height / -2,
-      1,
-      1000,
+      -distance * aspectRatio,
+      distance * aspectRatio,
+      distance,
+      -distance,
+      -1,
+      100,
     );
-
-    camera.current.position.z = 1;
-    camera.current.zoom = 20;
-    camera.current.updateProjectionMatrix();
-    console.log(camera.current);
-    scene.current.add(camera.current);
-
+    camera.current.position.set(0, 0, 1);
+    // camera.current.zoom = 1;
+    // camera.current.lookAt(new THREE.Vector3(0, 0, 0));
     // camera.current.position.z = 30;
 
     // camera.current = new THREE.PerspectiveCamera();
