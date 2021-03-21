@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import Letter from './Letter';
 import Physics from './Physics';
+import UserInput from './UserInput';
 
 interface WorldProps {
   config: any;
@@ -9,6 +10,7 @@ interface WorldProps {
   appTime: any;
   camera: any;
   renderer: any;
+  bounds: any;
 }
 
 export default class World {
@@ -19,8 +21,10 @@ export default class World {
   renderer: any;
   container: THREE.Object3D;
   axis: THREE.AxesHelper;
-  letter: Letter;
+  letters = [];
   physics: any;
+  userInput: any;
+  bounds: any;
 
   constructor(options: WorldProps) {
     // Options
@@ -29,12 +33,19 @@ export default class World {
     this.appTime = options.appTime;
     this.camera = options.camera;
     this.renderer = options.renderer;
+    this.bounds = options.bounds;
 
     // Set up
     this.container = new THREE.Object3D();
+
     this.container.matrixAutoUpdate = false;
     this.setAxes();
     this.start();
+    this.userInput = new UserInput({
+      bounds: this.bounds,
+      camera: this.camera,
+      letters: this.letters,
+    });
   }
 
   start() {
@@ -53,17 +64,20 @@ export default class World {
       debug: this.debug,
       appTime: this.appTime,
     });
-    this.container.add(this.physics.models.container);
+    // this.container.add(this.physics.container);
   }
 
   setLetter() {
-    this.letter = new Letter({
-      appTime: this.appTime,
-      physics: this.physics,
-      renderer: this.renderer,
-      camera: this.camera,
-      config: this.config,
-    });
-    this.container.add(this.letter.container);
+    for (let i = 0; i < 10; i++) {
+      const letter = new Letter({
+        appTime: this.appTime,
+        physics: this.physics,
+        renderer: this.renderer,
+        camera: this.camera,
+        config: this.config,
+      });
+      this.letters.push(letter);
+      this.container.add(letter.container);
+    }
   }
 }

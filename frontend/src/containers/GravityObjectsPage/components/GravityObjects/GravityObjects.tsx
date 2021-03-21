@@ -32,8 +32,10 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
   const appTime = useRef(new AppTime());
   const controls = useRef(null);
   const world = useRef(null);
+  const bounds = useRef(null);
 
   useEffect(() => {
+    setBounds();
     setCamera();
     setRenderer();
     setWorld();
@@ -41,17 +43,17 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
     setDebug();
 
     appTime.current.on('tick', () => {
-      controls.current.update();
+      // controls.current.update();
       renderer.current.render(scene.current, camera.current);
     });
 
     const onResize = () => {
-      const bounds = canvasWrapperRef.current.getBoundingClientRect();
+      setBounds();
       renderer.current.setPixelRatio(
         Math.min(Math.max(window.devicePixelRatio, 1.5), 2),
       );
-      renderer.current.setSize(bounds.width, bounds.height);
-      camera.current.aspect = bounds.width / bounds.height;
+      renderer.current.setSize(bounds.current.width, bounds.current.height);
+      camera.current.aspect = bounds.current.width / bounds.current.height;
       camera.current.updateProjectionMatrix();
     };
 
@@ -74,6 +76,10 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
     };
   }, []);
 
+  const setBounds = () => {
+    bounds.current = canvasWrapperRef.current.getBoundingClientRect();
+  };
+
   const setRenderer = () => {
     scene.current = new THREE.Scene();
 
@@ -88,8 +94,8 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
     renderer.current.gammaFactor = 2.2;
     renderer.current.gammaOutPut = true;
 
-    controls.current = new OrbitControls(camera.current, canvasRef.current);
-    controls.current.enableDamping = true;
+    // controls.current = new OrbitControls(camera.current, canvasRef.current);
+    // controls.current.enableDamping = true;
   };
 
   const setCamera = () => {
@@ -99,6 +105,7 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
 
   const setWorld = () => {
     world.current = new World({
+      bounds: bounds.current,
       config: config.current,
       debug: debug.current,
       appTime: appTime.current,
