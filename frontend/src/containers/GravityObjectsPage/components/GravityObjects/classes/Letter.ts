@@ -45,11 +45,11 @@ export default class Letter {
     // this.setLetter.object.position.copy(this.physics.letter.body.position);
 
     // Cannon
-    const sphereShape = new CANNON.Sphere(0.5);
+    const sphereShape = new CANNON.Sphere(1);
 
-    const randomX = (Math.random() - 0.5) * Math.random() * 30;
-    const randomY = (Math.random() - 0.5) * Math.random() * 30;
-    const randomZ = (Math.random() - 0.5) * Math.random() * 30 * 0;
+    const randomX = (Math.random() - 0.5) * Math.random() * 50;
+    const randomY = (Math.random() - 0.5) * Math.random() * 50;
+    const randomZ = (Math.random() - 0.5) * Math.random() * 50 * 0;
 
     this.spherePhysicBody = new CANNON.Body({
       mass: 1,
@@ -59,7 +59,8 @@ export default class Letter {
 
     this.physics.world.addBody(this.spherePhysicBody);
 
-    const geometry = new THREE.SphereGeometry(0.5, 20);
+    const geometry = new THREE.SphereGeometry(1, 20);
+    geometry.center();
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     material.wireframe = true;
     this.sphereBody = new THREE.Mesh(geometry, material);
@@ -78,6 +79,14 @@ export default class Letter {
   };
 
   performMove = mouse => {
-    this.spherePhysicBody.position.set(mouse.x, mouse.y, 0);
+    const vector = new THREE.Vector3(mouse.x, mouse.y, 0).unproject(
+      this.camera,
+    );
+
+    this.spherePhysicBody.position.set(
+      vector.x * this.camera.position.z * 5,
+      vector.y * this.camera.position.z * 5,
+      0,
+    );
   };
 }

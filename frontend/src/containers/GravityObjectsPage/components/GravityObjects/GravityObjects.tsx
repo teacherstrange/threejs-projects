@@ -100,7 +100,7 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
 
   const setCamera = () => {
     camera.current = new THREE.PerspectiveCamera();
-    camera.current.position.set(0, 0, 20);
+    camera.current.position.set(0, 0, 40);
   };
 
   const setWorld = () => {

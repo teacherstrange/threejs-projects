@@ -64,8 +64,6 @@ export default class UserInput {
   };
 
   onMouseDown = event => {
-    console.log(this.bounds.width);
-
     this.touchMoveStartX = event.clientX;
     this.touchMoveStartY = event.clientY;
     this.touchMoveLastY = this.touchMoveStartY;
@@ -89,7 +87,7 @@ export default class UserInput {
       letterContainers = letterContainers.concat(letter.container);
     });
     const intersects = this.raycaster.intersectObjects(letterContainers, true);
-    console.log(intersects);
+
     if (intersects.length !== 0) {
       for (let i = 0; i < this.letters.length; ++i) {
         if (
