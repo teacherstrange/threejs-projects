@@ -25,7 +25,7 @@ export default function GravityObjectsPage(props: Props) {
     <>
       <Wrapper>
         <Label>
-          <RevealString text={'smash your keyboard'} />
+          <RevealString text={'drag the objects'} />
         </Label>
 
         <CanvasWrapper>
