@@ -29,7 +29,7 @@ export default function GravityObjectsPage(props: Props) {
         </Label>
 
         <CanvasWrapper>
-          <GravityObjects onItemClick={onItemClick} />
+          <GravityObjects />
         </CanvasWrapper>
 
         <Link href="/letter-sandbox">dsaf</Link>
