@@ -40,6 +40,7 @@ export default class Application {
     this.setConfig();
 
     this.setWorld();
+    this.setListeners();
   };
 
   onResize = () => {
@@ -61,10 +62,7 @@ export default class Application {
     }
   };
 
-  setBounds = () => {
-    //TODO
-    this.bounds = this.canvasWrapper.getBoundingClientRect();
-
+  setListeners = () => {
     window.addEventListener('resize', this.onResize);
     window.addEventListener('visibilitychange', this.onVisibilityChange);
 
@@ -72,6 +70,10 @@ export default class Application {
       this.controls.update();
       this.renderer.render(this.scene, this.camera);
     });
+  };
+
+  setBounds = () => {
+    this.bounds = this.canvasWrapper.getBoundingClientRect();
   };
 
   setRenderer = () => {
