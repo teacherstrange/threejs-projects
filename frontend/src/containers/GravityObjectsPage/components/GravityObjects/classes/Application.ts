@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
 export interface Config {
-  debug?: boolean;
+  showDebugGui?: boolean;
 }
 
 export default class Application {
@@ -15,8 +15,8 @@ export default class Application {
   camera;
   scene;
   renderer;
-  config = { debug: false };
-  debug;
+  config = <Config>{ showDebugGui: false };
+  debugGUI;
   appTime = new AppTime();
   controls;
   world;
@@ -46,12 +46,17 @@ export default class Application {
   onResize = () => {
     this.log();
     this.setBounds();
+
     this.renderer.setPixelRatio(
       Math.min(Math.max(window.devicePixelRatio, 1.5), 2),
     );
     this.renderer.setSize(this.bounds.width, this.bounds.height);
     this.camera.aspect = this.bounds.width / this.bounds.height;
     this.camera.updateProjectionMatrix();
+  };
+
+  setBounds = () => {
+    this.bounds = this.canvasWrapper.getBoundingClientRect();
   };
 
   onVisibilityChange = () => {
@@ -67,13 +72,9 @@ export default class Application {
     window.addEventListener('visibilitychange', this.onVisibilityChange);
 
     this.appTime.on('tick', () => {
-      this.controls.update();
+      // this.controls.update();
       this.renderer.render(this.scene, this.camera);
     });
-  };
-
-  setBounds = () => {
-    this.bounds = this.canvasWrapper.getBoundingClientRect();
   };
 
   setRenderer = () => {
@@ -92,8 +93,8 @@ export default class Application {
     this.renderer.gammaFactor = 2.2;
     this.renderer.gammaOutPut = true;
 
-    this.controls = new OrbitControls(this.camera, this.canvasRef);
-    this.controls.enableDamping = true;
+    // this.controls = new OrbitControls(this.camera, this.canvasRef);
+    // this.controls.enableDamping = true;
   };
 
   setCamera = () => {
@@ -105,7 +106,7 @@ export default class Application {
     this.world = new World({
       bounds: this.bounds,
       config: this.config,
-      debug: this.debug,
+      debug: this.debugGUI,
       appTime: this.appTime,
       camera: this.camera,
       renderer: this.renderer,
@@ -114,19 +115,19 @@ export default class Application {
   };
 
   setConfig = () => {
-    this.config.debug = window.location.hash === '#debug';
+    this.config.showDebugGui = window.location.hash === '#debug';
   };
 
   setDebug = () => {
-    if (this.config.debug) {
-      this.debug = new dat.GUI({ width: 420 });
+    if (this.config.showDebugGui) {
+      this.debugGUI = new dat.GUI({ width: 420 });
     }
   };
 
   destructor = () => {
     this.camera.orbitControls && this.camera.orbitControls.dispose();
     this.appTime.stop();
-    this.debug && this.debug.destroy();
+    this.debugGUI && this.debugGUI.destroy();
     this.renderer.dispose();
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('visibilitychange', this.onVisibilityChange);
