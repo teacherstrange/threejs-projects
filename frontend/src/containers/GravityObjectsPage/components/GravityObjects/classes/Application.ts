@@ -11,18 +11,19 @@ export interface Config {
 }
 
 export default class Application {
-  canvasRef;
-  camera;
-  scene;
-  renderer;
-  config = <Config>{ showDebugGui: false };
-  debugGUI;
+  canvasRef: HTMLCanvasElement;
+  canvasWrapper: HTMLDivElement;
+  camera: THREE.PerspectiveCamera;
+  scene: THREE.Scene;
+  renderer: THREE.WebGLRenderer;
+  controls: OrbitControls;
+  world: World;
+  bounds: DOMRect;
+  debugGUI: dat.GUI;
   appTime = new AppTime();
-  controls;
-  world;
-  bounds;
-  canvasWrapper;
+  config = <Config>{ showDebugGui: false };
   log;
+
   constructor(canvasRef, canvasWrapper, log) {
     this.canvasRef = canvasRef;
     this.canvasWrapper = canvasWrapper;
@@ -90,8 +91,8 @@ export default class Application {
 
     this.renderer.setClearColor(0xffffff, 1);
     this.renderer.physicallyCorrectLights = true;
-    this.renderer.gammaFactor = 2.2;
-    this.renderer.gammaOutPut = true;
+    // this.renderer.gammaFactor = 2.2;
+    // this.renderer.gammaOutPut = true;
 
     // this.controls = new OrbitControls(this.camera, this.canvasRef);
     // this.controls.enableDamping = true;
@@ -125,7 +126,7 @@ export default class Application {
   };
 
   destructor = () => {
-    this.camera.orbitControls && this.camera.orbitControls.dispose();
+    // this.camera.orbitControls && this.camera.orbitControls.dispose();
     this.appTime.stop();
     this.debugGUI && this.debugGUI.destroy();
     this.renderer.dispose();
