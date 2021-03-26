@@ -22,30 +22,24 @@ export default class Application {
   debugGUI: dat.GUI;
   appTime = new AppTime();
   config = <Config>{ showDebugGui: false };
-  log;
 
-  constructor(canvasRef, canvasWrapper, log) {
+  constructor(canvasRef, canvasWrapper) {
     this.canvasRef = canvasRef;
     this.canvasWrapper = canvasWrapper;
-    this.log = log;
     this.setup();
   }
 
   setup = () => {
     this.setCamera();
     this.setRenderer();
-
     this.onResize();
-
     this.setDebug();
     this.setConfig();
-
     this.setWorld();
     this.setListeners();
   };
 
   onResize = () => {
-    this.log();
     this.setBounds();
 
     this.renderer.setPixelRatio(
