@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `core_store` (
   `environment` varchar(255) DEFAULT NULL,
   `tag` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 27 DEFAULT CHARSET = latin1;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 DEFAULT CHARSET = latin1;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: index_pages
@@ -267,7 +267,7 @@ VALUES
   (
     1,
     'english titlez',
-    'english description',
+    'english description changed v2',
     'webiste',
     1
   );
@@ -562,6 +562,17 @@ VALUES
     '',
     ''
   );
+INSERT INTO
+  `core_store` (`id`, `key`, `value`, `type`, `environment`, `tag`)
+VALUES
+  (
+    27,
+    'plugin_upload_settings',
+    '{\"sizeOptimization\":true,\"responsiveDimensions\":true}',
+    'object',
+    'production',
+    ''
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: index_pages
@@ -585,7 +596,7 @@ VALUES
     1,
     1,
     '2021-03-27 18:55:20',
-    '2021-03-27 21:22:10'
+    '2021-03-27 21:45:26'
   );
 
 # ------------------------------------------------------------
@@ -653,7 +664,7 @@ VALUES
     'Root',
     'root',
     'root@root.com',
-    '$2b$10$TcANOV4fIl65kscR.eOAdO5yoLj2t13q9VFhOwNckhm.kZ.pVx7cq',
+    '$2b$10$7AHZvwZkV1zPykvB0Z8n5.k2RiwrOXJE3JT8Xnj24iGqbmrHbr5l.',
     NULL,
     NULL,
     1,
