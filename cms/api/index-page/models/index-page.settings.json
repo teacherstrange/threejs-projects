@@ -2,8 +2,7 @@
   "kind": "collectionType",
   "collectionName": "index_pages",
   "info": {
-    "name": "indexPage",
-    "description": ""
+    "name": "indexPage"
   },
   "options": {
     "increments": true,
