@@ -85,8 +85,6 @@ export default class Application {
 
     this.renderer.setClearColor(0xffffff, 1);
     this.renderer.physicallyCorrectLights = true;
-    // this.renderer.gammaFactor = 2.2;
-    // this.renderer.gammaOutPut = true;
 
     // this.controls = new OrbitControls(this.camera, this.canvasRef);
     // this.controls.enableDamping = true;
