@@ -66,7 +66,7 @@ export default class Application {
     window.addEventListener('resize', this.onResize);
     window.addEventListener('visibilitychange', this.onVisibilityChange);
 
-    this.appTime.on('tick', () => {
+    this.appTime.on('tick', (slowDownFactor, time) => {
       // this.controls.update();
       this.renderer.render(this.scene, this.camera);
     });

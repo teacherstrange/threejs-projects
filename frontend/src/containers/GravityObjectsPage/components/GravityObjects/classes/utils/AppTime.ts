@@ -33,7 +33,7 @@ export default class AppTime extends EventEmitter {
     this.lastFrameTime = time;
     this.slowDownFactor = Math.min(Math.max(this.delta / DT_60FPS, 1), 1);
 
-    this.trigger('tick', {});
+    this.trigger('tick', [this.slowDownFactor, time]);
   };
 
   stop() {
