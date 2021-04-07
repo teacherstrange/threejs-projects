@@ -46,7 +46,7 @@ export default class Application {
     this.renderer.setPixelRatio(
       Math.min(Math.max(window.devicePixelRatio, 1.5), 2),
     );
-    this.renderer.outputEncoding = THREE.sRGBEncoding;
+
     this.camera.aspect = this.bounds.width / this.bounds.height;
     this.camera.updateProjectionMatrix();
   };
@@ -83,7 +83,7 @@ export default class Application {
     });
 
     this.renderer.shadowMap.enabled = true;
-
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
     this.renderer.setClearColor(0xffffff, 1);
     this.renderer.physicallyCorrectLights = true;
 
