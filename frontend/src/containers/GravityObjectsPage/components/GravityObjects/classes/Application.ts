@@ -42,10 +42,11 @@ export default class Application {
   onResize = () => {
     this.setBounds();
 
+    this.renderer.setSize(this.bounds.width, this.bounds.height);
     this.renderer.setPixelRatio(
       Math.min(Math.max(window.devicePixelRatio, 1.5), 2),
     );
-    this.renderer.setSize(this.bounds.width, this.bounds.height);
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
     this.camera.aspect = this.bounds.width / this.bounds.height;
     this.camera.updateProjectionMatrix();
   };
