@@ -4,19 +4,28 @@ import { Wrapper } from './styled/Wrapper';
 import { RendererWrapper } from './styled/RendererWrapper';
 
 import Application from './classes/Application';
+import { application } from './functions/application';
 import Link from 'next/link';
 
 interface GravityObjectsProps {}
 
 const GravityObjects = memo<GravityObjectsProps>(props => {
-  const canvasRef = useRef(null);
-  const canvasWrapperRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const app = new Application(canvasRef.current, canvasWrapperRef.current);
+    const { destroy } = application({
+      canvasRefEl: canvasRef.current,
+      canvasWrapperRefEl: canvasWrapperRef.current,
+    });
+
+    // console.log(x.showName());
+
+    // const app = new Application(canvasRef.current, canvasWrapperRef.current);
 
     return () => {
-      app.destructor();
+      destroy();
+      // app.destructor();
     };
   }, []);
 
