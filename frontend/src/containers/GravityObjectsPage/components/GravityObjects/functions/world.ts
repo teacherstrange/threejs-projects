@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import { box } from './box';
+import { lights } from './lights';
 import { AppObj } from './application';
 
 interface World {
@@ -23,8 +24,13 @@ export const world = (props: World) => {
     container.add(boxContainer);
   };
 
+  const setLights = () => {
+    const { container: lightsContainer } = lights();
+    container.add(lightsContainer);
+  };
+
   // setPhysics();
-  // setLights();
+  setLights();
   setAxes();
   setBox();
 
