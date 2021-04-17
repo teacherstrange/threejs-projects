@@ -14,7 +14,7 @@ interface Config {
 
 export interface AppObj {
   appTime: AppTime;
-  camera: THREE.PerspectiveCamera;
+  camera: THREE.OrthographicCamera;
   scene: THREE.Scene;
   renderer: THREE.WebGLRenderer;
   sizes: DOMRect;
@@ -37,8 +37,23 @@ export const application = (props: Application) => {
   const { appTime, config } = appObj;
 
   const setCamera = () => {
-    camera = new THREE.PerspectiveCamera();
-    camera.position.set(0, 2, 10);
+    const aspectRatio = sizes.width / sizes.height;
+    camera = new THREE.OrthographicCamera(
+      -1 * aspectRatio,
+      1 * aspectRatio,
+      1,
+      -1,
+      0.1,
+      100,
+    );
+
+    camera.left = -1 * aspectRatio;
+    camera.right = 1 * aspectRatio;
+    camera.top = 1;
+    camera.bottom = -1;
+
+    camera.position.set(4, 4, 4);
+    camera.lookAt(0, 0, 0);
   };
 
   const setRenderer = () => {
@@ -65,7 +80,11 @@ export const application = (props: Application) => {
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(Math.max(window.devicePixelRatio, 1.5), 2));
 
-    camera.aspect = sizes.width / sizes.height;
+    const aspectRatio = sizes.width / sizes.height;
+    camera.left = -1 * aspectRatio;
+    camera.right = 1 * aspectRatio;
+    camera.top = 1;
+    camera.bottom = -1;
     camera.updateProjectionMatrix();
   };
 
