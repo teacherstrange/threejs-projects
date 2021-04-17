@@ -1,5 +1,12 @@
 import * as THREE from 'three';
 
+export interface StackBox {
+  threejs: THREE.Mesh;
+  width: number;
+  depth: number;
+  direction: number;
+}
+
 interface Box {}
 
 export const box = () => {
@@ -17,7 +24,7 @@ export const box = () => {
     stack.push(layer);
   };
 
-  const generateBox = (x, y, z, width, depth) => {
+  const generateBox = (x, y, z, width, depth): StackBox => {
     const geometry = new THREE.BoxGeometry(width, BOX_HEIGHT, depth);
 
     const color = new THREE.Color(`hsl(${30 + stack.length * 4}, 100%,50%)`);

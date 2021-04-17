@@ -9,15 +9,18 @@ interface World {
   appObj: AppObj;
 }
 
-export const world = (props: World) => {
+export const world = ({ appObj }: World) => {
   const container = new THREE.Object3D();
   container.matrixAutoUpdate = false;
   container.add(new THREE.AxesHelper());
-  const { destroy: destroyUserInput, gameStarted } = userInput();
   const { stack, addLayer, generateBox, container: boxContainer } = box();
+  const { destroy: destroyUserInput, gameStarted } = userInput({
+    appObj,
+    stack,
+  });
+
   const { container: lightsContainer } = lights();
 
-  generateBox(0, 0, 0, 2, 2);
   container.add(boxContainer);
   container.add(lightsContainer);
 
