@@ -27,8 +27,10 @@ export const box = () => {
     container.add(mesh);
 
     return {
+      threejs: mesh,
       width,
       depth,
+      direction: null,
     };
   };
 
