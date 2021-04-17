@@ -23,7 +23,7 @@ export interface AppObj {
 }
 
 export const application = (props: Application) => {
-  const appObj = {
+  const appObj: AppObj = {
     appTime: new AppTime(),
     camera: null,
     scene: null,
