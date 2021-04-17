@@ -8,18 +8,33 @@ interface Application {
   canvasWrapperRefEl: HTMLDivElement;
 }
 
-export interface Config {
+interface Config {
   showDebugGui?: boolean;
 }
 
+export interface AppObj {
+  appTime: AppTime;
+  camera: THREE.PerspectiveCamera;
+  scene: THREE.Scene;
+  renderer: THREE.WebGLRenderer;
+  sizes: DOMRect;
+  config: Config;
+  debugGUI: dat.GUI;
+}
+
 export const application = (props: Application) => {
-  const appTime = new AppTime();
-  let camera: THREE.PerspectiveCamera;
-  let scene: THREE.Scene;
-  let renderer: THREE.WebGLRenderer;
-  let sizes: DOMRect;
-  const config = <Config>{ showDebugGui: false };
-  let debugGUI: dat.GUI;
+  const appObj = {
+    appTime: new AppTime(),
+    camera: null,
+    scene: null,
+    renderer: null,
+    sizes: null,
+    config: { showDebugGui: false },
+    debugGUI: null,
+  };
+
+  let { camera, debugGUI, renderer, scene, sizes } = appObj;
+  const { appTime, config } = appObj;
 
   const setCamera = () => {
     camera = new THREE.PerspectiveCamera();
