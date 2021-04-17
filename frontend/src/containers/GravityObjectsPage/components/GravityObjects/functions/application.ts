@@ -47,13 +47,22 @@ export const application = (props: Application) => {
       100,
     );
 
-    camera.left = -1 * aspectRatio;
-    camera.right = 1 * aspectRatio;
-    camera.top = 1;
-    camera.bottom = -1;
+    updateCameraSettings();
 
     camera.position.set(4, 4, 4);
     camera.lookAt(0, 0, 0);
+  };
+
+  const updateCameraSettings = () => {
+    const aspectRatio = sizes.width / sizes.height;
+    const distance = 5;
+
+    camera.left = (aspectRatio / -1) * distance;
+    camera.right = (aspectRatio / 1) * distance;
+    camera.top = 1 * distance;
+    camera.bottom = -1 * distance;
+
+    camera.updateProjectionMatrix();
   };
 
   const setRenderer = () => {
@@ -80,12 +89,7 @@ export const application = (props: Application) => {
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(Math.max(window.devicePixelRatio, 1.5), 2));
 
-    const aspectRatio = sizes.width / sizes.height;
-    camera.left = -1 * aspectRatio;
-    camera.right = 1 * aspectRatio;
-    camera.top = 1;
-    camera.bottom = -1;
-    camera.updateProjectionMatrix();
+    updateCameraSettings();
   };
 
   const onVisibilityChange = () => {
