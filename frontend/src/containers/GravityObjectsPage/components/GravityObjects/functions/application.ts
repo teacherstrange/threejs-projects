@@ -109,8 +109,9 @@ export const application = (props: Application) => {
   };
 
   const setWorld = () => {
-    const { container } = world({ appObj });
+    const { destroy, container } = world({ appObj });
     scene.add(container);
+    return { destroy };
   };
 
   const setConfig = () => {
@@ -124,6 +125,7 @@ export const application = (props: Application) => {
   };
 
   const destroy = () => {
+    destroySetWorld();
     appTime.stop();
     debugGUI && debugGUI.destroy();
     renderer.dispose();
@@ -137,7 +139,7 @@ export const application = (props: Application) => {
   onResize();
   setConfig();
   setDebug();
-  setWorld();
+  const { destroy: destroySetWorld } = setWorld();
   setListeners();
 
   return { destroy };
