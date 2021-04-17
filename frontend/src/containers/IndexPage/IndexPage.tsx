@@ -23,6 +23,10 @@ export default function IndexPage(props: Props) {
           <Link passHref href="/letter-sandbox">
             <a>Go to letter sandbox</a>
           </Link>
+          <div></div>
+          <Link passHref href="/gravity-objects">
+            <a> gravity-objects</a>
+          </Link>
         </CustomContainer>
       </Wrapper>
     </>
