@@ -14,9 +14,9 @@ export interface Config {
 
 export const application = (props: Application) => {
   const appTime = new AppTime();
-  let camera;
-  let scene;
-  let renderer;
+  let camera: THREE.PerspectiveCamera;
+  let scene: THREE.Scene;
+  let renderer: THREE.WebGLRenderer;
   let sizes: DOMRect;
   const config = <Config>{ showDebugGui: false };
   let debugGUI: dat.GUI;
@@ -96,8 +96,8 @@ export const application = (props: Application) => {
   setCamera();
   setRenderer();
   onResize();
-  setDebug();
   setConfig();
+  setDebug();
   setWorld();
   setListeners();
 
