@@ -86,8 +86,8 @@ export const application = (props: Application) => {
   };
 
   const setWorld = () => {
-    world();
-    // scene.add(this.world.container);
+    const { container } = world({ appObj });
+    scene.add(container);
   };
 
   const setConfig = () => {
