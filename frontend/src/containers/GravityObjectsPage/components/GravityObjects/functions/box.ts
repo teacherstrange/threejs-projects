@@ -4,7 +4,7 @@ export interface StackBox {
   threejs: THREE.Mesh;
   width: number;
   depth: number;
-  direction: number;
+  direction: 'x' | 'z';
 }
 
 interface Box {}
@@ -46,5 +46,6 @@ export const box = () => {
     generateBox,
     addLayer,
     stack,
+    BOX_HEIGHT,
   };
 };

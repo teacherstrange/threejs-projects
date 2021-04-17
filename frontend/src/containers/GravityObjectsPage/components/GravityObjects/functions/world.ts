@@ -13,10 +13,18 @@ export const world = ({ appObj }: World) => {
   const container = new THREE.Object3D();
   container.matrixAutoUpdate = false;
   container.add(new THREE.AxesHelper());
-  const { stack, addLayer, generateBox, container: boxContainer } = box();
+  const {
+    BOX_HEIGHT,
+    stack,
+    addLayer,
+    generateBox,
+    container: boxContainer,
+  } = box();
   const { destroy: destroyUserInput, gameStarted } = userInput({
     appObj,
     stack,
+    BOX_HEIGHT,
+    addLayer,
   });
 
   const { container: lightsContainer } = lights();

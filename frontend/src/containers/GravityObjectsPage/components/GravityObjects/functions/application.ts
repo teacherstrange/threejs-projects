@@ -33,12 +33,9 @@ export const application = (props: Application) => {
     debugGUI: null,
   };
 
-  let { camera, debugGUI, renderer, scene, sizes } = appObj;
-  const { appTime, config } = appObj;
-
   const setCamera = () => {
-    const aspectRatio = sizes.width / sizes.height;
-    camera = new THREE.OrthographicCamera(
+    const aspectRatio = appObj.sizes.width / appObj.sizes.height;
+    appObj.camera = new THREE.OrthographicCamera(
       -1 * aspectRatio,
       1 * aspectRatio,
       1,
@@ -49,86 +46,88 @@ export const application = (props: Application) => {
 
     updateCameraSettings();
 
-    camera.position.set(4, 4, 4);
-    camera.lookAt(0, 0, 0);
+    appObj.camera.position.set(4, 4, 4);
+    appObj.camera.lookAt(0, 0, 0);
   };
 
   const updateCameraSettings = () => {
-    const aspectRatio = sizes.width / sizes.height;
-    const distance = 5;
+    const aspectRatio = appObj.sizes.width / appObj.sizes.height;
+    const distance = 10;
 
-    camera.left = (aspectRatio / -1) * distance;
-    camera.right = (aspectRatio / 1) * distance;
-    camera.top = 1 * distance;
-    camera.bottom = -1 * distance;
+    appObj.camera.left = (aspectRatio / -1) * distance;
+    appObj.camera.right = (aspectRatio / 1) * distance;
+    appObj.camera.top = 1 * distance;
+    appObj.camera.bottom = -1 * distance;
 
-    camera.updateProjectionMatrix();
+    appObj.camera.updateProjectionMatrix();
   };
 
   const setRenderer = () => {
-    scene = new THREE.Scene();
+    appObj.scene = new THREE.Scene();
 
-    renderer = new THREE.WebGLRenderer({
+    appObj.renderer = new THREE.WebGLRenderer({
       canvas: props.canvasRefEl,
       antialias: true,
       alpha: true,
     });
 
-    renderer.shadowMap.enabled = true;
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.setClearColor(0xff00ff, 1);
-    renderer.physicallyCorrectLights = true;
+    appObj.renderer.shadowMap.enabled = true;
+    appObj.renderer.outputEncoding = THREE.sRGBEncoding;
+    appObj.renderer.setClearColor(0xff00ff, 1);
+    appObj.renderer.physicallyCorrectLights = true;
   };
 
   const setSizes = () => {
-    sizes = props.canvasWrapperRefEl.getBoundingClientRect();
+    appObj.sizes = props.canvasWrapperRefEl.getBoundingClientRect();
   };
 
   const onResize = () => {
     setSizes();
-    renderer.setSize(sizes.width, sizes.height);
-    renderer.setPixelRatio(Math.min(Math.max(window.devicePixelRatio, 1.5), 2));
+    appObj.renderer.setSize(appObj.sizes.width, appObj.sizes.height);
+    appObj.renderer.setPixelRatio(
+      Math.min(Math.max(window.devicePixelRatio, 1.5), 2),
+    );
 
     updateCameraSettings();
   };
 
   const onVisibilityChange = () => {
     if (document.hidden) {
-      appTime.stop();
+      appObj.appTime.stop();
     } else {
-      appTime.resume();
+      appObj.appTime.resume();
     }
   };
 
   const setListeners = () => {
     window.addEventListener('resize', onResize);
 
-    appTime.on('tick', (slowDownFactor, time) => {
-      renderer.render(scene, camera);
+    appObj.appTime.on('tick', (slowDownFactor, time) => {
+      appObj.renderer.render(appObj.scene, appObj.camera);
     });
   };
 
   const setWorld = () => {
     const { destroy, container } = world({ appObj });
-    scene.add(container);
+    appObj.scene.add(container);
     return { destroy };
   };
 
   const setConfig = () => {
-    config.showDebugGui = window.location.hash === '#debug';
+    appObj.config.showDebugGui = window.location.hash === '#debug';
   };
 
   const setDebug = () => {
-    if (config.showDebugGui) {
-      debugGUI = new dat.GUI({ width: 420 });
+    if (appObj.config.showDebugGui) {
+      appObj.debugGUI = new dat.GUI({ width: 420 });
     }
   };
 
   const destroy = () => {
     destroySetWorld();
-    appTime.stop();
-    debugGUI && debugGUI.destroy();
-    renderer.dispose();
+    appObj.appTime.stop();
+    appObj.debugGUI && appObj.debugGUI.destroy();
+    appObj.renderer.dispose();
     window.removeEventListener('resize', onResize);
     window.removeEventListener('visibilitychange', onVisibilityChange);
   };
