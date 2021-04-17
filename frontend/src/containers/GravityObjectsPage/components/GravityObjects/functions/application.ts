@@ -108,6 +108,7 @@ export const application = (props: Application) => {
     window.removeEventListener('visibilitychange', onVisibilityChange);
   };
 
+  setSizes();
   setCamera();
   setRenderer();
   onResize();
