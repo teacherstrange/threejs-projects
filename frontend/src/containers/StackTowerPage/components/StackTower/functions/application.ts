@@ -17,7 +17,7 @@ interface Config {
 }
 
 export const CAMERA_POS = 6;
-export const START_HUE_COLOR = 20;
+export const START_HUE_COLOR = 265;
 
 export interface AppObj {
   appTime: AppTime;
@@ -28,6 +28,7 @@ export interface AppObj {
   config: Config;
   debugGUI: dat.GUI;
   hueColorValue: number;
+  colorMultiplier: number;
 }
 
 export const application = (appProps: ApplicationProps) => {
@@ -40,6 +41,7 @@ export const application = (appProps: ApplicationProps) => {
     config: { showDebugGui: false },
     debugGUI: null,
     hueColorValue: START_HUE_COLOR,
+    colorMultiplier: 30,
   };
 
   const setCamera = () => {

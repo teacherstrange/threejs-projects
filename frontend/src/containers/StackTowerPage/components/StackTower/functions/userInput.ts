@@ -266,7 +266,13 @@ export const userInput = ({
     }
 
     tweenBackgroundColor = new TWEEN.Tween({ colorValue: appObj.hueColorValue })
-      .to({ colorValue: START_HUE_COLOR + gameSetup.stack.length * 1 }, 1000)
+      .to(
+        {
+          colorValue:
+            START_HUE_COLOR + gameSetup.stack.length * appObj.colorMultiplier,
+        },
+        1000,
+      )
       .easing(TWEEN.Easing.Exponential.Out)
       .onUpdate(object => {
         appObj.hueColorValue = object.colorValue;

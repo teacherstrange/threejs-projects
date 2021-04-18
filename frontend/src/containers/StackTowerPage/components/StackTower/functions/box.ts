@@ -46,8 +46,11 @@ export const box = ({ appObj, cannonWorld, gameSetup }: Box) => {
   const generateBox = (x, y, z, width, depth, falls): StackBox => {
     //ThreeJS
     const geometry = new THREE.BoxGeometry(width, gameSetup.BOX_HEIGHT, depth);
+    const colorDepth = falls
+      ? gameSetup.stack.length - 1
+      : gameSetup.stack.length;
     const color = new THREE.Color(
-      `hsl(${START_HUE_COLOR + gameSetup.stack.length * 4}, 100%,50%)`,
+      `hsl(${START_HUE_COLOR + colorDepth * appObj.colorMultiplier}, 100%,50%)`,
     );
     const material = new THREE.MeshLambertMaterial({ color });
     const mesh = new THREE.Mesh(geometry, material);
