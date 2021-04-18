@@ -17,7 +17,6 @@ interface Config {
 }
 
 export const CAMERA_POS = 6;
-export const START_HUE_COLOR = 250;
 
 export interface AppObj {
   appTime: AppTime;
@@ -27,7 +26,9 @@ export interface AppObj {
   sizes: DOMRect;
   config: Config;
   debugGUI: dat.GUI;
-  hueColorValue: number;
+  baseColor: number;
+  backgroundColor: number;
+
   colorMultiplier: number;
 }
 
@@ -40,7 +41,8 @@ export const application = (appProps: ApplicationProps) => {
     sizes: null,
     config: { showDebugGui: false },
     debugGUI: null,
-    hueColorValue: START_HUE_COLOR,
+    backgroundColor: 1,
+    baseColor: 1,
     colorMultiplier: 5,
   };
 
@@ -85,7 +87,7 @@ export const application = (appProps: ApplicationProps) => {
     appObj.renderer.shadowMap.enabled = true;
     appObj.renderer.outputEncoding = THREE.sRGBEncoding;
     appObj.renderer.setClearColor(
-      new THREE.Color(`hsl(${appObj.hueColorValue}, 100%,80%)`),
+      new THREE.Color(`hsl(${appObj.backgroundColor}, 80%,80%)`),
     );
     appObj.renderer.physicallyCorrectLights = true;
   };
@@ -144,7 +146,8 @@ export const application = (appProps: ApplicationProps) => {
     window.removeEventListener('resize', onResize);
     window.removeEventListener('visibilitychange', onVisibilityChange);
   };
-
+  appObj.baseColor = Math.floor(Math.random() * 360) + 1;
+  appObj.backgroundColor = appObj.baseColor;
   setSizes();
   setCamera();
   setRenderer();

@@ -2,12 +2,7 @@ import TWEEN from '@tweenjs/tween.js';
 import * as CANNON from 'cannon-es';
 import * as THREE from 'three';
 
-import {
-  START_HUE_COLOR,
-  AppObj,
-  CAMERA_POS,
-  ApplicationProps,
-} from './application';
+import { AppObj, CAMERA_POS, ApplicationProps } from './application';
 import { GameSetup } from './world';
 import { AddOverhang } from './overhangBox';
 
@@ -265,18 +260,20 @@ export const userInput = ({
       tweenBackgroundColor.stop();
     }
 
-    tweenBackgroundColor = new TWEEN.Tween({ colorValue: appObj.hueColorValue })
+    tweenBackgroundColor = new TWEEN.Tween({
+      colorValue: appObj.backgroundColor,
+    })
       .to(
         {
           colorValue:
-            START_HUE_COLOR + gameSetup.stack.length * appObj.colorMultiplier,
+            appObj.baseColor + gameSetup.stack.length * appObj.colorMultiplier,
         },
         1000,
       )
       .easing(TWEEN.Easing.Exponential.Out)
       .onUpdate(object => {
-        appObj.hueColorValue = object.colorValue;
-        const color = new THREE.Color(`hsl(${object.colorValue}, 100%,80%)`);
+        appObj.backgroundColor = object.colorValue;
+        const color = new THREE.Color(`hsl(${object.colorValue}, 80%,80%)`);
         appObj.renderer.setClearColor(color);
       })
       .start();
