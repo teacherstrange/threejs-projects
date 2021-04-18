@@ -4,12 +4,15 @@ import { box, StackBox } from './box';
 import { lights } from './lights';
 import { AppObj } from './application';
 import { userInput } from './userInput';
+import { overhangBox } from './overhangBox';
+import { physics } from './physics';
 
 export interface GameSetup {
   gameStarted: boolean;
   BOX_HEIGHT: number;
   ORIGINAL_BOX_SIZE: number;
   stack: StackBox[];
+  overhangs: StackBox[];
 }
 
 interface World {
@@ -24,16 +27,23 @@ export const world = ({ appObj }: World) => {
     BOX_HEIGHT: 1,
     ORIGINAL_BOX_SIZE: 3,
     stack: [],
+    overhangs: [],
   };
 
-  const { addLayer, container: boxContainer } = box({
+  const { cannonWorld } = physics({ appObj });
+
+  const { generateBox, addLayer, container: boxContainer } = box({
     gameSetup,
+    cannonWorld,
   });
+
+  const { addOverhang } = overhangBox({ generateBox, gameSetup });
 
   const { destroy: destroyUserInput } = userInput({
     appObj,
     gameSetup,
     addLayer,
+    addOverhang,
   });
 
   const { container: lightsContainer } = lights();
