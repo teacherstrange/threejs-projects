@@ -164,6 +164,7 @@ export const userInput = ({
   };
 
   appTime.on('tick', (slowDownFactor, time) => {
+    console.log(slowDownFactor);
     const speed = 0.15;
 
     const topLayer = gameSetup.stack[gameSetup.stack.length - 1];
