@@ -3,19 +3,22 @@ import React, { memo, useRef, useEffect } from 'react';
 import { Wrapper } from './styled/Wrapper';
 import { RendererWrapper } from './styled/RendererWrapper';
 
-import Application from './classes/Application';
+import { application } from './functions/application';
 
-interface GravityObjectsProps {}
+interface StackTowerProps {}
 
-const GravityObjects = memo<GravityObjectsProps>(props => {
+const StackTower = memo<StackTowerProps>(props => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const app = new Application(canvasRef.current, canvasWrapperRef.current);
+    const { destroy } = application({
+      canvasRefEl: canvasRef.current,
+      canvasWrapperRefEl: canvasWrapperRef.current,
+    });
 
     return () => {
-      app.destructor();
+      destroy();
     };
   }, []);
 
@@ -30,6 +33,6 @@ const GravityObjects = memo<GravityObjectsProps>(props => {
   );
 });
 
-export default GravityObjects;
+export default StackTower;
 
-GravityObjects.displayName = 'GravityObjects';
+StackTower.displayName = 'StackTower';

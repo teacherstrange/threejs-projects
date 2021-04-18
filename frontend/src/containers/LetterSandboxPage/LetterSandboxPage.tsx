@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { CustomContainer } from 'components/CustomContainer/CustomContainer';
-import { sharedValues } from 'utils/sharedValues';
 import { RevealString } from 'components/Animations/RevealString/RevealString';
 
 import { LetterSandbox } from './components/LetterSandbox/LetterSandbox';
@@ -22,11 +20,10 @@ export default function LetterSandboxPage(props: Props) {
         <Label>
           <RevealString text={'smash your keyboard'} />
         </Label>
-        {/* <CustomContainer containerSettings={sharedValues.containers.normal}> */}
+
         <CanvasWrapper>
           <LetterSandbox onItemClick={onItemClick} />
         </CanvasWrapper>
-        {/* </CustomContainer> */}
       </Wrapper>
     </>
   );

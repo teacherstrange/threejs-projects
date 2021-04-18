@@ -19,13 +19,18 @@ export default function IndexPage(props: Props) {
       <Head {...head} />
       <Wrapper>
         <CustomContainer containerSettings={sharedValues.containers.normal}>
-          <p>{name}</p>
+          <h1>{head.title}</h1>
+          <h1>{head.title}</h1>
           <Link passHref href="/letter-sandbox">
             <a>Go to letter sandbox</a>
           </Link>
           <div></div>
           <Link passHref href="/gravity-objects">
             <a> gravity-objects</a>
+          </Link>
+          <div></div>
+          <Link passHref href="/stack-tower">
+            <a> stack tower</a>
           </Link>
         </CustomContainer>
       </Wrapper>
