@@ -54,7 +54,7 @@ export const world = ({ appProps, appObj }: World) => {
   const { container: lightsContainer } = lights();
 
   container.matrixAutoUpdate = false;
-  container.add(new THREE.AxesHelper());
+  // container.add(new THREE.AxesHelper());
 
   container.add(boxContainer);
   container.add(lightsContainer);
