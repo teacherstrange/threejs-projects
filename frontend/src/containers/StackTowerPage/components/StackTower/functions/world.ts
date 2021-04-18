@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import { box, StackBox } from './box';
 import { lights } from './lights';
-import { AppObj } from './application';
+import { AppObj, ApplicationProps } from './application';
 import { userInput } from './userInput';
 import { overhangBox } from './overhangBox';
 import { physics } from './physics';
@@ -17,9 +17,10 @@ export interface GameSetup {
 
 interface World {
   appObj: AppObj;
+  appProps: ApplicationProps;
 }
 
-export const world = ({ appObj }: World) => {
+export const world = ({ appProps, appObj }: World) => {
   const container = new THREE.Object3D();
 
   const gameSetup: GameSetup = {

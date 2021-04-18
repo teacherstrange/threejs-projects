@@ -3,9 +3,13 @@ import { world } from './world';
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-interface Application {
+export interface ApplicationProps {
   canvasRefEl: HTMLCanvasElement;
   canvasWrapperRefEl: HTMLDivElement;
+  isStarted: boolean;
+  setIsStarted: React.Dispatch<React.SetStateAction<boolean>>;
+  isReady: boolean;
+  setIsReady: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface Config {
@@ -24,7 +28,7 @@ export interface AppObj {
   debugGUI: dat.GUI;
 }
 
-export const application = (props: Application) => {
+export const application = (appProps: ApplicationProps) => {
   const appObj: AppObj = {
     appTime: new AppTime(),
     camera: null,
@@ -68,19 +72,19 @@ export const application = (props: Application) => {
     appObj.scene = new THREE.Scene();
 
     appObj.renderer = new THREE.WebGLRenderer({
-      canvas: props.canvasRefEl,
+      canvas: appProps.canvasRefEl,
       antialias: true,
       alpha: true,
     });
 
     appObj.renderer.shadowMap.enabled = true;
     appObj.renderer.outputEncoding = THREE.sRGBEncoding;
-    appObj.renderer.setClearColor(0xff00ff, 1);
+    appObj.renderer.setClearColor(0xf5f5f5, 1);
     appObj.renderer.physicallyCorrectLights = true;
   };
 
   const setSizes = () => {
-    appObj.sizes = props.canvasWrapperRefEl.getBoundingClientRect();
+    appObj.sizes = appProps.canvasWrapperRefEl.getBoundingClientRect();
   };
 
   const onResize = () => {
@@ -110,7 +114,7 @@ export const application = (props: Application) => {
   };
 
   const setWorld = () => {
-    const { destroy, container } = world({ appObj });
+    const { destroy, container } = world({ appObj, appProps });
     appObj.scene.add(container);
     return { destroy };
   };

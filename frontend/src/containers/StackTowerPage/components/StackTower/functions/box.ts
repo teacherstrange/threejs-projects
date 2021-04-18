@@ -44,7 +44,7 @@ export const box = ({ cannonWorld, gameSetup }: Box) => {
     //ThreeJS
     const geometry = new THREE.BoxGeometry(width, gameSetup.BOX_HEIGHT, depth);
     const color = new THREE.Color(
-      `hsl(${30 + gameSetup.stack.length * 4}, 100%,50%)`,
+      `hsl(${260 + gameSetup.stack.length * 4}, 100%,50%)`,
     );
     const material = new THREE.MeshLambertMaterial({ color });
     const mesh = new THREE.Mesh(geometry, material);
