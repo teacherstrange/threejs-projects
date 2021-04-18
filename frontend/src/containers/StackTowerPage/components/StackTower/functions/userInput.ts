@@ -164,7 +164,7 @@ export const userInput = ({
   };
 
   appTime.on('tick', (slowDownFactor, time) => {
-    const speed = 0.2;
+    const speed = 0.15;
 
     const topLayer = gameSetup.stack[gameSetup.stack.length - 1];
 
@@ -311,10 +311,10 @@ export const userInput = ({
       .start();
   };
 
-  window.addEventListener('click', handleClick);
+  window.addEventListener('pointerdown', handleClick);
 
   const destroy = () => {
-    window.removeEventListener('click', handleClick);
+    window.removeEventListener('pointerdown', handleClick);
   };
 
   return {
