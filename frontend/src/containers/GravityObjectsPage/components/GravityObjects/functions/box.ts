@@ -1,33 +1,38 @@
 import * as THREE from 'three';
 
+import { GameSetup } from './world';
+
+export type Direction = 'x' | 'z';
+
 export interface StackBox {
   threejs: THREE.Mesh<THREE.BoxGeometry, THREE.MeshLambertMaterial>;
   width: number;
   depth: number;
-  direction: 'x' | 'z';
+  direction: Direction;
 }
 
-interface Box {}
+interface Box {
+  gameSetup: GameSetup;
+}
 
-export const box = () => {
+export const box = ({ gameSetup }: Box) => {
   const container = new THREE.Object3D();
   container.matrixAutoUpdate = false;
 
-  const BOX_HEIGHT = 1;
-  const stack = [];
-
   const addLayer = (x, z, width, depth, direction) => {
-    const y = BOX_HEIGHT * stack.length;
+    const y = gameSetup.BOX_HEIGHT * gameSetup.stack.length;
 
     const layer = generateBox(x, y, z, width, depth);
     layer.direction = direction;
-    stack.push(layer);
+    gameSetup.stack.push(layer);
   };
 
   const generateBox = (x, y, z, width, depth): StackBox => {
-    const geometry = new THREE.BoxGeometry(width, BOX_HEIGHT, depth);
+    const geometry = new THREE.BoxGeometry(width, gameSetup.BOX_HEIGHT, depth);
 
-    const color = new THREE.Color(`hsl(${30 + stack.length * 4}, 100%,50%)`);
+    const color = new THREE.Color(
+      `hsl(${30 + gameSetup.stack.length * 4}, 100%,50%)`,
+    );
     const material = new THREE.MeshLambertMaterial({ color });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(x, y, z);
@@ -43,9 +48,6 @@ export const box = () => {
 
   return {
     container,
-    generateBox,
     addLayer,
-    stack,
-    BOX_HEIGHT,
   };
 };
