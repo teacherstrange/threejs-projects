@@ -50,7 +50,7 @@ export const box = ({ appObj, cannonWorld, gameSetup }: Box) => {
       : gameSetup.stack.length;
 
     const color = new THREE.Color(
-      `hsl(${appObj.baseColor + colorDepth * appObj.colorMultiplier}, 95%,55%)`,
+      `hsl(${appObj.baseColor + colorDepth * appObj.colorMultiplier}, 65%,55%)`,
     );
     const material = new THREE.MeshLambertMaterial({ color });
     const mesh = new THREE.Mesh(geometry, material);

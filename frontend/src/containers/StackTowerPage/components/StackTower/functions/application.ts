@@ -43,7 +43,7 @@ export const application = (appProps: ApplicationProps) => {
     debugGUI: null,
     backgroundColor: 1,
     baseColor: 1,
-    colorMultiplier: 5,
+    colorMultiplier: 10,
   };
 
   const setCamera = () => {
@@ -87,7 +87,7 @@ export const application = (appProps: ApplicationProps) => {
     appObj.renderer.shadowMap.enabled = true;
     appObj.renderer.outputEncoding = THREE.sRGBEncoding;
     appObj.renderer.setClearColor(
-      new THREE.Color(`hsl(${appObj.backgroundColor}, 80%,80%)`),
+      new THREE.Color(`hsl(${appObj.backgroundColor}, 40%,80%)`),
     );
     appObj.renderer.physicallyCorrectLights = true;
   };
@@ -146,8 +146,7 @@ export const application = (appProps: ApplicationProps) => {
     window.removeEventListener('resize', onResize);
     window.removeEventListener('visibilitychange', onVisibilityChange);
   };
-  appObj.baseColor = Math.floor(Math.random() * 360) + 1;
-  appObj.backgroundColor = appObj.baseColor;
+
   setSizes();
   setCamera();
   setRenderer();

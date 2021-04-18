@@ -136,6 +136,7 @@ export const userInput = ({
 
   const initGame = () => {
     destroyBoxes();
+    animateInitBackground();
 
     // Foundation
     addLayer({
@@ -255,6 +256,35 @@ export const userInput = ({
       .start();
   };
 
+  const animateInitBackground = () => {
+    if (tweenBackgroundColor) {
+      tweenBackgroundColor.stop();
+    }
+
+    const oldValue = appObj.baseColor;
+
+    appObj.baseColor = Math.floor(Math.random() * 360) + 1;
+    appObj.backgroundColor = appObj.baseColor;
+
+    tweenBackgroundColor = new TWEEN.Tween({
+      colorValue: oldValue,
+    })
+      .to(
+        {
+          colorValue:
+            appObj.baseColor + gameSetup.stack.length * appObj.colorMultiplier,
+        },
+        400,
+      )
+      .easing(TWEEN.Easing.Linear.None)
+      .onUpdate(object => {
+        appObj.backgroundColor = object.colorValue;
+        const color = new THREE.Color(`hsl(${object.colorValue}, 40%,80%)`);
+        appObj.renderer.setClearColor(color);
+      })
+      .start();
+  };
+
   const animateBackgroundColor = () => {
     if (tweenBackgroundColor) {
       tweenBackgroundColor.stop();
@@ -268,12 +298,12 @@ export const userInput = ({
           colorValue:
             appObj.baseColor + gameSetup.stack.length * appObj.colorMultiplier,
         },
-        1000,
+        400,
       )
-      .easing(TWEEN.Easing.Exponential.Out)
+      .easing(TWEEN.Easing.Linear.None)
       .onUpdate(object => {
         appObj.backgroundColor = object.colorValue;
-        const color = new THREE.Color(`hsl(${object.colorValue}, 80%,80%)`);
+        const color = new THREE.Color(`hsl(${object.colorValue}, 40%,80%)`);
         appObj.renderer.setClearColor(color);
       })
       .start();
