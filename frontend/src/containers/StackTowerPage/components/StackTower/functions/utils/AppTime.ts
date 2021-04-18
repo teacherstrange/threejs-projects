@@ -2,7 +2,7 @@ import TWEEN from '@tweenjs/tween.js';
 
 import EventEmitter from './EventEmitter';
 
-const DT_60FPS = 1000 / 60;
+const DT_60FPS = 1000 / 144;
 
 export default class AppTime extends EventEmitter {
   ticker;
