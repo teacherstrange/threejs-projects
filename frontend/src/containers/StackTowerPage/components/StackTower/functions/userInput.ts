@@ -276,7 +276,7 @@ export const userInput = ({
       .easing(TWEEN.Easing.Exponential.Out)
       .onUpdate(object => {
         appObj.hueColorValue = object.colorValue;
-        const color = new THREE.Color(`hsl(${object.colorValue}, 100%,50%)`);
+        const color = new THREE.Color(`hsl(${object.colorValue}, 100%,80%)`);
         appObj.renderer.setClearColor(color);
       })
       .start();
