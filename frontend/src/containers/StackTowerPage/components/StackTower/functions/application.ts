@@ -41,7 +41,7 @@ export const application = (appProps: ApplicationProps) => {
     config: { showDebugGui: false },
     debugGUI: null,
     hueColorValue: START_HUE_COLOR,
-    colorMultiplier: 8,
+    colorMultiplier: 5,
   };
 
   const setCamera = () => {
