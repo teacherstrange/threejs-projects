@@ -9,7 +9,7 @@ export const Cover = styled(motion.div)<Props>`
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: white;
   z-index: 20;
 `;
 
