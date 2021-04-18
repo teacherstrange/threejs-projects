@@ -1,5 +1,6 @@
 import TWEEN from '@tweenjs/tween.js';
 import * as CANNON from 'cannon-es';
+import * as THREE from 'three';
 
 import { AppObj } from './application';
 import { CAMERA_POS } from './application';
@@ -149,8 +150,20 @@ export const userInput = ({
 
     // Copy coordinates from Cannon.js to Three.js
     gameSetup.overhangs.forEach(element => {
-      element.threejs.position.copy(element.cannonjs.position);
-      element.threejs.quaternion.copy(element.cannonjs.quaternion);
+      const positionVec = new THREE.Vector3(
+        element.cannonjs.position.x,
+        element.cannonjs.position.y,
+        element.cannonjs.position.z,
+      );
+
+      const quaternionVec = new THREE.Quaternion(
+        element.cannonjs.quaternion.x,
+        element.cannonjs.quaternion.y,
+        element.cannonjs.quaternion.z,
+      );
+
+      element.threejs.position.copy(positionVec);
+      element.threejs.quaternion.copy(quaternionVec);
     });
   });
 
