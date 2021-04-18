@@ -32,7 +32,6 @@ export const userInput = ({
   let tweenEnterBox;
   let tweenCamera;
   let tweenScaleUp;
-  let tweenCameraDown;
 
   const handleClick = () => {
     if (!gameSetup.gameStarted) {
@@ -241,12 +240,12 @@ export const userInput = ({
   };
 
   const animateCameraDown = () => {
-    if (tweenCameraDown) {
-      tweenCameraDown.stop();
+    if (tweenCamera) {
+      tweenCamera.stop();
     }
 
-    tweenCameraDown = new TWEEN.Tween({ offsetY: camera.position.y })
-      .to({ offsetY: CAMERA_POS }, 4000)
+    tweenCamera = new TWEEN.Tween({ offsetY: camera.position.y })
+      .to({ offsetY: CAMERA_POS }, 6000)
       .easing(TWEEN.Easing.Exponential.Out)
       .onUpdate(object => {
         camera.position.y = object.offsetY;
