@@ -2,7 +2,12 @@ import TWEEN from '@tweenjs/tween.js';
 import * as CANNON from 'cannon-es';
 import * as THREE from 'three';
 
-import { AppObj, CAMERA_POS, ApplicationProps } from './application';
+import {
+  START_HUE_COLOR,
+  AppObj,
+  CAMERA_POS,
+  ApplicationProps,
+} from './application';
 import { GameSetup } from './world';
 import { AddOverhang } from './overhangBox';
 
@@ -32,6 +37,7 @@ export const userInput = ({
   let tweenEnterBox;
   let tweenCamera;
   let tweenScaleUp;
+  let tweenBackgroundColor;
 
   const handleClick = () => {
     if (!gameSetup.gameStarted) {
@@ -99,6 +105,7 @@ export const userInput = ({
           direction: nextDirection,
         });
         animateCamera();
+        animateBackgroundColor();
         animateEnterBox(gameSetup.stack.length - 1);
       } else {
         gameSetup.gameStarted = false;
@@ -249,6 +256,22 @@ export const userInput = ({
       .easing(TWEEN.Easing.Exponential.Out)
       .onUpdate(object => {
         camera.position.y = object.offsetY;
+      })
+      .start();
+  };
+
+  const animateBackgroundColor = () => {
+    if (tweenBackgroundColor) {
+      tweenBackgroundColor.stop();
+    }
+
+    tweenBackgroundColor = new TWEEN.Tween({ colorValue: appObj.hueColorValue })
+      .to({ colorValue: START_HUE_COLOR + gameSetup.stack.length * 1 }, 1000)
+      .easing(TWEEN.Easing.Exponential.Out)
+      .onUpdate(object => {
+        appObj.hueColorValue = object.colorValue;
+        const color = new THREE.Color(`hsl(${object.colorValue}, 100%,50%)`);
+        appObj.renderer.setClearColor(color);
       })
       .start();
   };

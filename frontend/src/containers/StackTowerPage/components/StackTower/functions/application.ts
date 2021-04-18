@@ -17,6 +17,7 @@ interface Config {
 }
 
 export const CAMERA_POS = 6;
+export const START_HUE_COLOR = 20;
 
 export interface AppObj {
   appTime: AppTime;
@@ -26,6 +27,7 @@ export interface AppObj {
   sizes: DOMRect;
   config: Config;
   debugGUI: dat.GUI;
+  hueColorValue: number;
 }
 
 export const application = (appProps: ApplicationProps) => {
@@ -37,6 +39,7 @@ export const application = (appProps: ApplicationProps) => {
     sizes: null,
     config: { showDebugGui: false },
     debugGUI: null,
+    hueColorValue: START_HUE_COLOR,
   };
 
   const setCamera = () => {
@@ -79,7 +82,9 @@ export const application = (appProps: ApplicationProps) => {
 
     appObj.renderer.shadowMap.enabled = true;
     appObj.renderer.outputEncoding = THREE.sRGBEncoding;
-    appObj.renderer.setClearColor(0xf5f5f5, 1);
+    appObj.renderer.setClearColor(
+      new THREE.Color(`hsl(${appObj.hueColorValue}, 100%,50%)`),
+    );
     appObj.renderer.physicallyCorrectLights = true;
   };
 

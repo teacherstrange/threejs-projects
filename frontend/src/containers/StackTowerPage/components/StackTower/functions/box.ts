@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 
-import { AppObj } from './application';
+import { START_HUE_COLOR, AppObj } from './application';
 
 import { GameSetup } from './world';
 
@@ -47,7 +47,7 @@ export const box = ({ appObj, cannonWorld, gameSetup }: Box) => {
     //ThreeJS
     const geometry = new THREE.BoxGeometry(width, gameSetup.BOX_HEIGHT, depth);
     const color = new THREE.Color(
-      `hsl(${260 + gameSetup.stack.length * 4}, 100%,50%)`,
+      `hsl(${START_HUE_COLOR + gameSetup.stack.length * 4}, 100%,50%)`,
     );
     const material = new THREE.MeshLambertMaterial({ color });
     const mesh = new THREE.Mesh(geometry, material);
