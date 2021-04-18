@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export interface StackBox {
-  threejs: THREE.Mesh;
+  threejs: THREE.Mesh<THREE.BoxGeometry, THREE.MeshLambertMaterial>;
   width: number;
   depth: number;
   direction: 'x' | 'z';

@@ -46,13 +46,13 @@ export const application = (props: Application) => {
 
     updateCameraSettings();
 
-    appObj.camera.position.set(4, 4, 4);
+    appObj.camera.position.set(8, 8, 8);
     appObj.camera.lookAt(0, 0, 0);
   };
 
   const updateCameraSettings = () => {
     const aspectRatio = appObj.sizes.width / appObj.sizes.height;
-    const distance = 10;
+    const distance = 8;
 
     appObj.camera.left = (aspectRatio / -1) * distance;
     appObj.camera.right = (aspectRatio / 1) * distance;

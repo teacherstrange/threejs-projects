@@ -13,6 +13,7 @@ export const world = ({ appObj }: World) => {
   const container = new THREE.Object3D();
   container.matrixAutoUpdate = false;
   container.add(new THREE.AxesHelper());
+  const ORIGINAL_BOX_SIZE = 3;
   const {
     BOX_HEIGHT,
     stack,
@@ -21,6 +22,7 @@ export const world = ({ appObj }: World) => {
     container: boxContainer,
   } = box();
   const { destroy: destroyUserInput, gameStarted } = userInput({
+    ORIGINAL_BOX_SIZE,
     appObj,
     stack,
     BOX_HEIGHT,
