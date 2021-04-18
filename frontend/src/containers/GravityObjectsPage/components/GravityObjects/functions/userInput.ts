@@ -5,20 +5,15 @@ import * as THREE from 'three';
 import { AppObj } from './application';
 import { CAMERA_POS } from './application';
 import { GameSetup } from './world';
+import { AddOverhang } from './overhangBox';
 
-import { Direction } from './box';
+import { AddLayer } from './box';
 
 interface UserInput {
   appObj: AppObj;
-  addLayer: (
-    x: number,
-    z: number,
-    width: number,
-    depth: number,
-    direction: Direction,
-  ) => void;
+  addLayer: AddLayer;
   gameSetup: GameSetup;
-  addOverhang: (x: any, z: any, width: any, depth: any) => void;
+  addOverhang: AddOverhang;
 }
 
 export const userInput = ({
@@ -29,8 +24,8 @@ export const userInput = ({
 }: UserInput) => {
   const { appTime, camera } = appObj;
 
-  let tweenCamera;
   let tweenEnterBox;
+  let tweenCamera;
   let tweenScaleUp;
 
   const handleClick = () => {
@@ -74,14 +69,25 @@ export const userInput = ({
         const overhangWidth = direction === 'x' ? overhangSize : topLayer.width;
         const overhangDepth = direction === 'z' ? overhangSize : topLayer.depth;
 
-        addOverhang(overhangX, overhangZ, overhangWidth, overhangDepth);
+        addOverhang({
+          x: overhangX,
+          z: overhangZ,
+          width: overhangWidth,
+          depth: overhangDepth,
+        });
 
         //Next layer
         const nextX = direction === 'x' ? topLayer.threejs.position.x : -10;
         const nextZ = direction === 'z' ? topLayer.threejs.position.z : -10;
         const nextDirection = direction === 'x' ? 'z' : 'x';
 
-        addLayer(nextX, nextZ, newWidth, newDepth, nextDirection);
+        addLayer({
+          x: nextX,
+          z: nextZ,
+          width: newWidth,
+          depth: newDepth,
+          direction: nextDirection,
+        });
         moveCameraUp();
         animateEnterBox(gameSetup.stack.length - 1);
       } else {
@@ -116,22 +122,22 @@ export const userInput = ({
 
   const initGame = () => {
     // Foundation
-    addLayer(
-      0,
-      0,
-      gameSetup.ORIGINAL_BOX_SIZE,
-      gameSetup.ORIGINAL_BOX_SIZE,
-      'z',
-    );
+    addLayer({
+      x: 0,
+      z: 0,
+      width: gameSetup.ORIGINAL_BOX_SIZE,
+      depth: gameSetup.ORIGINAL_BOX_SIZE,
+      direction: 'z',
+    });
 
     // First layer
-    addLayer(
-      -10,
-      0,
-      gameSetup.ORIGINAL_BOX_SIZE,
-      gameSetup.ORIGINAL_BOX_SIZE,
-      'x',
-    );
+    addLayer({
+      x: -10,
+      z: 0,
+      width: gameSetup.ORIGINAL_BOX_SIZE,
+      depth: gameSetup.ORIGINAL_BOX_SIZE,
+      direction: 'x',
+    });
 
     scaleUpBox(0);
     animateEnterBox(1);

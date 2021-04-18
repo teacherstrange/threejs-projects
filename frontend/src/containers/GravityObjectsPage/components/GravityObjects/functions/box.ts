@@ -18,11 +18,21 @@ interface Box {
   cannonWorld: CANNON.World;
 }
 
+interface AddLayerProps {
+  x: number;
+  z: number;
+  width: number;
+  depth: number;
+  direction: Direction;
+}
+
+export type AddLayer = (props: AddLayerProps) => void;
+
 export const box = ({ cannonWorld, gameSetup }: Box) => {
   const container = new THREE.Object3D();
   container.matrixAutoUpdate = false;
 
-  const addLayer = (x, z, width, depth, direction) => {
+  const addLayer: AddLayer = ({ x, z, width, depth, direction }) => {
     const y = gameSetup.BOX_HEIGHT * gameSetup.stack.length;
 
     const layer = generateBox(x, y, z, width, depth, false);
