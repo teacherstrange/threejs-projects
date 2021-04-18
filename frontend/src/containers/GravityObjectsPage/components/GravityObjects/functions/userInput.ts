@@ -1,7 +1,7 @@
 import TWEEN from '@tweenjs/tween.js';
 
 import { AppObj } from './application';
-import { StackBox } from './box';
+import { CAMERA_POS } from './application';
 import { GameSetup } from './world';
 
 import { Direction } from './box';
@@ -116,7 +116,10 @@ export const userInput = ({ addLayer, appObj, gameSetup }: UserInput) => {
 
     tweenCamera = new TWEEN.Tween({ offsetY: camera.position.y })
       .to(
-        { offsetY: gameSetup.BOX_HEIGHT * (gameSetup.stack.length - 2) + 8 },
+        {
+          offsetY:
+            gameSetup.BOX_HEIGHT * (gameSetup.stack.length - 2) + CAMERA_POS,
+        },
         4000,
       )
       .easing(TWEEN.Easing.Exponential.Out)

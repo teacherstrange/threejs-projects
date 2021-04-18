@@ -12,6 +12,8 @@ interface Config {
   showDebugGui?: boolean;
 }
 
+export const CAMERA_POS = 10;
+
 export interface AppObj {
   appTime: AppTime;
   camera: THREE.OrthographicCamera;
@@ -46,13 +48,13 @@ export const application = (props: Application) => {
 
     updateCameraSettings();
 
-    appObj.camera.position.set(8, 8, 8);
+    appObj.camera.position.set(CAMERA_POS, CAMERA_POS, CAMERA_POS);
     appObj.camera.lookAt(0, 0, 0);
   };
 
   const updateCameraSettings = () => {
     const aspectRatio = appObj.sizes.width / appObj.sizes.height;
-    const distance = 8;
+    const distance = CAMERA_POS;
 
     appObj.camera.left = (aspectRatio / -1) * distance;
     appObj.camera.right = (aspectRatio / 1) * distance;
