@@ -2,6 +2,7 @@ import React, { memo, useRef, useEffect, useState } from 'react';
 
 import { Wrapper } from './styled/Wrapper';
 import { RendererWrapper } from './styled/RendererWrapper';
+import { Cover } from './styled/Cover';
 
 import { application } from './functions/application';
 
@@ -27,6 +28,7 @@ const StackTower = memo<StackTowerProps>(props => {
     return () => {
       destroy();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const StackTower = memo<StackTowerProps>(props => {
   return (
     <>
       <Wrapper>
+        <Cover animate={isReady ? 'animate' : 'initial'} />
         <RendererWrapper ref={canvasWrapperRef}>
           <canvas ref={canvasRef} />
         </RendererWrapper>

@@ -146,6 +146,7 @@ export const application = (appProps: ApplicationProps) => {
   setDebug();
   const { destroy: destroySetWorld } = setWorld();
   setListeners();
+  appProps.setIsReady(true);
 
   return { destroy };
 };
