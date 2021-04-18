@@ -36,6 +36,7 @@ export const userInput = ({
 
   const handleClick = () => {
     if (!gameSetup.gameStarted) {
+      appProps.setPoint(0);
       gameSetup.gameStarted = true;
       appProps.setIsStarted(true);
       initGame();
@@ -60,6 +61,7 @@ export const userInput = ({
       const overlap = size - overhangSize;
 
       if (overlap > 0) {
+        appProps.setPoint(prev => prev + 1);
         //Cut layer
         const newWidth = direction === 'x' ? overlap : topLayer.width;
         const newDepth = direction === 'z' ? overlap : topLayer.depth;

@@ -10,6 +10,8 @@ export interface ApplicationProps {
   setIsStarted: React.Dispatch<React.SetStateAction<boolean>>;
   isReady: boolean;
   setIsReady: React.Dispatch<React.SetStateAction<boolean>>;
+  point: number;
+  setPoint: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface Config {
