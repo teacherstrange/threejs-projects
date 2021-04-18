@@ -24,7 +24,7 @@ export const world = ({ appProps, appObj }: World) => {
   const container = new THREE.Object3D();
 
   const gameSetup: GameSetup = {
-    gameStarted: false,
+    gameStarted: appProps.isStarted,
     BOX_HEIGHT: 1,
     ORIGINAL_BOX_SIZE: 3,
     stack: [],
@@ -33,15 +33,19 @@ export const world = ({ appProps, appObj }: World) => {
 
   const { cannonWorld } = physics({ appObj });
 
-  const { generateBox, addLayer, container: boxContainer } = box({
+  const { destroyBoxes, generateBox, addLayer, container: boxContainer } = box({
     gameSetup,
     cannonWorld,
+    appObj,
   });
 
   const { addOverhang } = overhangBox({ generateBox, gameSetup });
 
   const { destroy: destroyUserInput } = userInput({
+    destroyBoxes,
+    cannonWorld,
     appObj,
+    appProps,
     gameSetup,
     addLayer,
     addOverhang,

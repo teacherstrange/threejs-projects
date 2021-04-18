@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 
+import { AppObj } from './application';
+
 import { GameSetup } from './world';
 
 export type Direction = 'x' | 'z';
@@ -16,6 +18,7 @@ export interface StackBox {
 interface Box {
   gameSetup: GameSetup;
   cannonWorld: CANNON.World;
+  appObj: AppObj;
 }
 
 interface AddLayerProps {
@@ -28,7 +31,7 @@ interface AddLayerProps {
 
 export type AddLayer = (props: AddLayerProps) => void;
 
-export const box = ({ cannonWorld, gameSetup }: Box) => {
+export const box = ({ appObj, cannonWorld, gameSetup }: Box) => {
   const container = new THREE.Object3D();
   container.matrixAutoUpdate = false;
 
@@ -69,9 +72,24 @@ export const box = ({ cannonWorld, gameSetup }: Box) => {
     };
   };
 
+  const destroyBoxes = () => {
+    for (const object of gameSetup.stack) {
+      container.remove(object.threejs);
+      cannonWorld.removeBody(object.cannonjs);
+    }
+
+    for (const object of gameSetup.overhangs) {
+      container.remove(object.threejs);
+      cannonWorld.removeBody(object.cannonjs);
+    }
+    gameSetup.stack = [];
+    gameSetup.overhangs = [];
+  };
+
   return {
     generateBox,
     container,
     addLayer,
+    destroyBoxes,
   };
 };

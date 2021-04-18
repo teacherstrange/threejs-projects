@@ -2,8 +2,7 @@ import TWEEN from '@tweenjs/tween.js';
 import * as CANNON from 'cannon-es';
 import * as THREE from 'three';
 
-import { AppObj } from './application';
-import { CAMERA_POS } from './application';
+import { AppObj, CAMERA_POS, ApplicationProps } from './application';
 import { GameSetup } from './world';
 import { AddOverhang } from './overhangBox';
 
@@ -11,28 +10,40 @@ import { AddLayer } from './box';
 
 interface UserInput {
   appObj: AppObj;
+  appProps: ApplicationProps;
   addLayer: AddLayer;
   gameSetup: GameSetup;
   addOverhang: AddOverhang;
+  cannonWorld: CANNON.World;
+  destroyBoxes: () => void;
 }
 
 export const userInput = ({
+  destroyBoxes,
   addOverhang,
   addLayer,
   appObj,
   gameSetup,
+  appProps,
+  cannonWorld,
 }: UserInput) => {
   const { appTime, camera } = appObj;
 
   let tweenEnterBox;
   let tweenCamera;
   let tweenScaleUp;
+  let tweenCameraDown;
 
   const handleClick = () => {
     if (!gameSetup.gameStarted) {
       gameSetup.gameStarted = true;
+      appProps.setIsStarted(true);
       initGame();
     } else {
+      if (!gameSetup.gameStarted) {
+        return;
+      }
+
       const topLayer = gameSetup.stack[gameSetup.stack.length - 1];
       const previousLayer = gameSetup.stack[gameSetup.stack.length - 2];
 
@@ -88,10 +99,12 @@ export const userInput = ({
           depth: newDepth,
           direction: nextDirection,
         });
-        moveCameraUp();
+        animateCamera();
         animateEnterBox(gameSetup.stack.length - 1);
       } else {
         gameSetup.gameStarted = false;
+        appProps.setIsStarted(false);
+        animateCameraDown();
       }
     }
   };
@@ -121,6 +134,8 @@ export const userInput = ({
   };
 
   const initGame = () => {
+    destroyBoxes();
+
     // Foundation
     addLayer({
       x: 0,
@@ -141,6 +156,7 @@ export const userInput = ({
 
     scaleUpBox(0);
     animateEnterBox(1);
+    animateCamera();
   };
 
   appTime.on('tick', (slowDownFactor, time) => {
@@ -204,7 +220,7 @@ export const userInput = ({
     tweenScaleUp.start();
   };
 
-  const moveCameraUp = () => {
+  const animateCamera = () => {
     if (tweenCamera) {
       tweenCamera.stop();
     }
@@ -217,6 +233,20 @@ export const userInput = ({
         },
         4000,
       )
+      .easing(TWEEN.Easing.Exponential.Out)
+      .onUpdate(object => {
+        camera.position.y = object.offsetY;
+      })
+      .start();
+  };
+
+  const animateCameraDown = () => {
+    if (tweenCameraDown) {
+      tweenCameraDown.stop();
+    }
+
+    tweenCameraDown = new TWEEN.Tween({ offsetY: camera.position.y })
+      .to({ offsetY: CAMERA_POS }, 4000)
       .easing(TWEEN.Easing.Exponential.Out)
       .onUpdate(object => {
         camera.position.y = object.offsetY;

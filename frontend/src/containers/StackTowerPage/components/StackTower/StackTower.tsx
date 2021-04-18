@@ -30,8 +30,8 @@ const StackTower = memo<StackTowerProps>(props => {
   }, []);
 
   useEffect(() => {
-    console.log(isReady);
-  }, [isReady]);
+    console.log(isStarted);
+  }, [isStarted]);
 
   return (
     <>
