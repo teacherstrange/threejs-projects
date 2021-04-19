@@ -27,7 +27,8 @@ export default class AppTime extends EventEmitter {
     }
 
     const delta = time - this.lastFrameTime;
-    const slowDownFactor = Math.round(delta / DT_FPS);
+    const slowDownFactor = delta / DT_FPS;
+
     this.trigger('tick', [slowDownFactor, time, delta]);
     this.lastFrameTime = time;
   };
