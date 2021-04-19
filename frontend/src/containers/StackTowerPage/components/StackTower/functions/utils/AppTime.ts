@@ -11,6 +11,9 @@ export default class AppTime extends EventEmitter {
   slowDownFactor;
   lastFrameTime;
   isResumed;
+  then;
+  now;
+  elapsed;
 
   constructor() {
     super();
@@ -33,7 +36,14 @@ export default class AppTime extends EventEmitter {
     this.lastFrameTime = time;
     this.slowDownFactor = Math.min(Math.max(this.delta / DT_60FPS, 1), 1);
 
-    this.trigger('tick', [this.slowDownFactor, time]);
+    this.now = time;
+    this.elapsed = this.now - this.then;
+    this.then = this.now - (this.elapsed % DT_60FPS);
+
+    if (this.elapsed > DT_60FPS) {
+      this.then = this.now - (this.elapsed % DT_60FPS);
+      this.trigger('tick', [this.slowDownFactor, time]);
+    }
   };
 
   stop() {
@@ -41,6 +51,7 @@ export default class AppTime extends EventEmitter {
   }
 
   resume() {
+    this.then = window.performance.now();
     this.ticker = window.requestAnimationFrame(this.tick);
     this.isResumed = true;
   }
