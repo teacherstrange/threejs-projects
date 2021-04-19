@@ -1,5 +1,6 @@
 import * as CANNON from 'cannon-es';
 import { AppObj } from './application';
+import { DEFALUT_FPS } from './utils/AppTime';
 
 interface Physics {
   appObj: AppObj;
@@ -13,8 +14,8 @@ export const physics = ({ appObj }: Physics) => {
   cannonWorld.defaultContactMaterial.friction = 0;
   cannonWorld.defaultContactMaterial.restitution = 0.1;
 
-  appObj.appTime.on('tick', (slowDownFactor, time) => {
-    cannonWorld.step(1 / 60, slowDownFactor, 2);
+  appObj.appTime.on('tick', (slowDownFactor, _time, delta) => {
+    cannonWorld.step(1 / DEFALUT_FPS, delta, slowDownFactor);
   });
 
   return {

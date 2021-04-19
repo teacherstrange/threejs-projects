@@ -2,11 +2,12 @@ import TWEEN from '@tweenjs/tween.js';
 
 import EventEmitter from './EventEmitter';
 
-const DT_60FPS = 1000 / 60;
+export const DEFALUT_FPS = 60;
+const DT_FPS = 1000 / DEFALUT_FPS;
 
 export default class AppTime extends EventEmitter {
-  isResumed;
   ticker;
+  isResumed;
   lastFrameTime;
 
   constructor() {
@@ -25,10 +26,10 @@ export default class AppTime extends EventEmitter {
       return;
     }
 
-    if (time - this.lastFrameTime > DT_60FPS) {
-      this.trigger('tick', [1, time]);
-      this.lastFrameTime += DT_60FPS;
-    }
+    const delta = time - this.lastFrameTime;
+    const slowDownFactor = Math.round(delta / DT_FPS);
+    this.trigger('tick', [slowDownFactor, time, delta]);
+    this.lastFrameTime = time;
   };
 
   stop() {

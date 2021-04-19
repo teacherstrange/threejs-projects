@@ -118,8 +118,9 @@ export const application = (appProps: ApplicationProps) => {
 
   const setListeners = () => {
     window.addEventListener('resize', onResize);
+    window.addEventListener('visibilitychange', onVisibilityChange);
 
-    appObj.appTime.on('tick', (slowDownFactor, time) => {
+    appObj.appTime.on('tick', (_slowDownFactor, _time, _delta) => {
       appObj.renderer.render(appObj.scene, appObj.camera);
     });
   };
