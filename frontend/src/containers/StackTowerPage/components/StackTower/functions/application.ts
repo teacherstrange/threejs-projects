@@ -2,6 +2,7 @@ import AppTime from './utils/AppTime';
 import { world } from './world';
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
+import TWEEN from '@tweenjs/tween.js';
 
 export interface ApplicationProps {
   canvasRefEl: HTMLCanvasElement;
@@ -120,7 +121,8 @@ export const application = (appProps: ApplicationProps) => {
     window.addEventListener('resize', onResize);
     window.addEventListener('visibilitychange', onVisibilityChange);
 
-    appObj.appTime.on('tick', (_slowDownFactor, _time, _delta) => {
+    appObj.appTime.on('tick', (_slowDownFactor, time, _delta) => {
+      TWEEN.update(time);
       appObj.renderer.render(appObj.scene, appObj.camera);
     });
   };
