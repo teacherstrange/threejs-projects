@@ -15,6 +15,12 @@ export const physics = ({ appObj }: Physics) => {
   cannonWorld.defaultContactMaterial.restitution = 0.1;
 
   appObj.appTime.on('tick', (slowDownFactor, _time, delta) => {
+    //Rounded slowDown factor to the nearest integer reduces physics lags
+    const slowDownFactorRounded = Math.round(slowDownFactor);
+    if (slowDownFactorRounded >= 1) {
+      slowDownFactor = slowDownFactorRounded;
+    }
+    console.log(slowDownFactor);
     cannonWorld.step(1 / DEFALUT_FPS, delta, slowDownFactor);
   });
 
