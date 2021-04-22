@@ -20,7 +20,6 @@ export const physics = ({ appObj }: Physics) => {
     if (slowDownFactorRounded >= 1) {
       slowDownFactor = slowDownFactorRounded;
     }
-    console.log(slowDownFactor);
     cannonWorld.step(1 / DEFALUT_FPS, delta, slowDownFactor);
   });
 
