@@ -24,7 +24,13 @@ export default class AppTime extends EventEmitter {
     }
 
     const delta = time - this.lastFrameTime;
-    const slowDownFactor = delta / DT_FPS;
+    let slowDownFactor = delta / DT_FPS;
+
+    //Rounded slowDown factor to the nearest integer reduces physics lags
+    const slowDownFactorRounded = Math.round(slowDownFactor);
+    if (slowDownFactorRounded >= 1) {
+      slowDownFactor = slowDownFactorRounded;
+    }
 
     this.trigger('tick', [slowDownFactor, time, delta]);
     this.lastFrameTime = time;
