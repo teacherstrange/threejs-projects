@@ -163,6 +163,8 @@ export const userInput = ({
     animateCamera();
   };
 
+  let animationDirection = 1;
+
   appTime.on('tick', (slowDownFactor, time) => {
     const speed = 0.15;
 
@@ -171,8 +173,19 @@ export const userInput = ({
     if (!topLayer) {
       return;
     }
-    topLayer.threejs.position[topLayer.direction] += speed * slowDownFactor;
-    topLayer.cannonjs.position[topLayer.direction] += speed * slowDownFactor;
+
+    if (topLayer.threejs.position[topLayer.direction] >= CAMERA_POS) {
+      animationDirection = -1;
+    }
+
+    if (topLayer.threejs.position[topLayer.direction] <= -CAMERA_POS) {
+      animationDirection = 1;
+    }
+
+    topLayer.threejs.position[topLayer.direction] +=
+      speed * slowDownFactor * animationDirection;
+    topLayer.cannonjs.position[topLayer.direction] +=
+      speed * slowDownFactor * animationDirection;
 
     // Copy coordinates from Cannon.js to Three.js
     gameSetup.overhangs.forEach(element => {
