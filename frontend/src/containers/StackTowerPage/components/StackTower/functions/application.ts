@@ -19,11 +19,11 @@ interface Config {
   showDebugGui?: boolean;
 }
 
-export const CAMERA_POS = 10;
+export const CAMERA_POS = 6;
 
 export interface AppObj {
   appTime: AppTime;
-  camera: THREE.PerspectiveCamera;
+  camera: THREE.OrthographicCamera;
   scene: THREE.Scene;
   renderer: THREE.WebGLRenderer;
   sizes: DOMRect;
@@ -50,19 +50,15 @@ export const application = (appProps: ApplicationProps) => {
   };
 
   const setCamera = () => {
-    // Orthographic camera
-    // const aspectRatio = appObj.sizes.width / appObj.sizes.height;
-    // appObj.camera = new THREE.OrthographicCamera(
-    //   -1 * aspectRatio,
-    //   1 * aspectRatio,
-    //   1,
-    //   -1,
-    //   0.1,
-    //   100,
-    // );
-
-    //Perspective camera
-    appObj.camera = new THREE.PerspectiveCamera();
+    const aspectRatio = appObj.sizes.width / appObj.sizes.height;
+    appObj.camera = new THREE.OrthographicCamera(
+      -1 * aspectRatio,
+      1 * aspectRatio,
+      1,
+      -1,
+      0.1,
+      100,
+    );
 
     updateCameraSettings();
 
@@ -72,16 +68,12 @@ export const application = (appProps: ApplicationProps) => {
 
   const updateCameraSettings = () => {
     const aspectRatio = appObj.sizes.width / appObj.sizes.height;
+    const distance = CAMERA_POS;
 
-    // Orthographic camera
-    // const distance = CAMERA_POS;
-    // appObj.camera.left = (aspectRatio / -1) * distance;
-    // appObj.camera.right = (aspectRatio / 1) * distance;
-    // appObj.camera.top = 1 * distance;
-    // appObj.camera.bottom = -1 * distance;
-
-    //Perspective camera
-    appObj.camera.aspect = aspectRatio;
+    appObj.camera.left = (aspectRatio / -1) * distance;
+    appObj.camera.right = (aspectRatio / 1) * distance;
+    appObj.camera.top = 1 * distance;
+    appObj.camera.bottom = -1 * distance;
 
     appObj.camera.updateProjectionMatrix();
   };
