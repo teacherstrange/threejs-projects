@@ -25,7 +25,7 @@ export const world = ({ appProps, appObj }: World) => {
 
   const gameSetup: GameSetup = {
     gameStarted: appProps.isStarted,
-    BOX_HEIGHT: 1,
+    BOX_HEIGHT: 0.8,
     ORIGINAL_BOX_SIZE: 3,
     stack: [],
     overhangs: [],
