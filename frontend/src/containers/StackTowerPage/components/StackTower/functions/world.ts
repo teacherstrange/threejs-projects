@@ -6,6 +6,7 @@ import { AppObj, ApplicationProps } from './application';
 import { userInput } from './userInput';
 import { overhangBox } from './overhangBox';
 import { physics } from './physics';
+import { distortionPlane } from './distortionPlane';
 
 export interface GameSetup {
   gameStarted: boolean;
@@ -22,6 +23,7 @@ interface World {
 
 export const world = ({ appProps, appObj }: World) => {
   const container = new THREE.Object3D();
+  container.matrixAutoUpdate = false;
 
   const gameSetup: GameSetup = {
     gameStarted: appProps.isStarted,
@@ -53,11 +55,13 @@ export const world = ({ appProps, appObj }: World) => {
 
   const { container: lightsContainer } = lights();
 
-  container.matrixAutoUpdate = false;
+  const { container: distortionPlaneContainer } = distortionPlane();
+
   // container.add(new THREE.AxesHelper());
 
   container.add(boxContainer);
   container.add(lightsContainer);
+  container.add(distortionPlaneContainer);
 
   const destroy = () => {
     destroyUserInput();
