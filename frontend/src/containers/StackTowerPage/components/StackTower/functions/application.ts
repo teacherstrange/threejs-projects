@@ -19,7 +19,7 @@ interface Config {
   showDebugGui?: boolean;
 }
 
-export const CAMERA_POS = 6;
+export const CAMERA_POS = 8;
 
 export interface AppObj {
   appTime: AppTime;
