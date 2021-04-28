@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import fragShader from './shaders/distortionPlaneShaders/fragShader.glsl';
 
 export const distortionPlane = () => {
