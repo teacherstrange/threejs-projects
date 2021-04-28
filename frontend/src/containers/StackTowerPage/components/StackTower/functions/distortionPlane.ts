@@ -16,7 +16,7 @@ export const distortionPlane = () => {
   let overlay;
 
   const generatePlane = () => {
-    const overlayGeometry = new THREE.PlaneGeometry(3, 3, 1, 1);
+    const overlayGeometry = new THREE.PlaneGeometry(8, 8, 1, 1);
     const overlayMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uColor: { value: new THREE.Color(color) },
@@ -28,15 +28,22 @@ export const distortionPlane = () => {
         varying vec2 vUv;
 
         void main(){
-            vUv = uv;
-            gl_Position = vec4(position.xy * 0.7, 0.5, 1.);
+          vUv = uv;
+          vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+          vec4 viewPosition = viewMatrix * modelPosition;
+          vec4 projectedPosition = projectionMatrix * viewPosition;
+          gl_Position = projectedPosition;
+
+
         }
       `,
       fragmentShader: fragShader,
       transparent: true,
     });
     overlay = new THREE.Mesh(overlayGeometry, overlayMaterial);
-
+    overlay.rotation.y = Math.PI * 0.25;
+    // overlay.rotation.x = Math.PI * 0.6;
+    overlay.position.set(3, 3, 3);
     container.add(overlay);
   };
 
