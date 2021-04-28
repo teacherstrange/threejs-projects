@@ -5,7 +5,7 @@ import { Wrapper } from './styled/Wrapper';
 import { ContentWrapper } from './styled/ContentWrapper';
 import { Text } from './styled/Text';
 
-export interface NewGameProps {
+export interface ContinueGameProps {
   variants?: Variants;
   transition?: Transition;
   animate?: string;
@@ -13,7 +13,7 @@ export interface NewGameProps {
   onClick?: () => void;
 }
 
-export const NewGame = memo<NewGameProps>(props => {
+export const ContinueGame = memo<ContinueGameProps>(props => {
   const { children, ...rest } = props;
   const [isHovered, setIsHovered] = React.useState(false);
   return (
@@ -26,11 +26,11 @@ export const NewGame = memo<NewGameProps>(props => {
         {...rest}
       >
         <ContentWrapper animate={isHovered ? 'animate' : 'initial'}>
-          <Text>START THE GAME</Text>
+          <Text>BEAT IT!</Text>
         </ContentWrapper>
       </Wrapper>
     </>
   );
 });
 
-NewGame.displayName = 'NewGame';
+ContinueGame.displayName = 'ContinueGame';

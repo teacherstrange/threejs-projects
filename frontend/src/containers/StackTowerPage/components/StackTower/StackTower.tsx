@@ -9,6 +9,7 @@ import { application } from './functions/application';
 import { StatWrapper } from './styled/StatWrapper';
 import { Counter } from './styled/Counter';
 import { NewGameComp } from './styled/NewGameComp';
+import { ContinueGameComp } from './styled/ContinueGameComp';
 
 interface StackTowerProps {}
 
@@ -52,7 +53,21 @@ const StackTower = memo<StackTowerProps>(props => {
           onClick={() => initGameRef.current()}
           animate={point === null && isReady ? 'animate' : 'initial'}
         />
-        <StatWrapper>
+        <ContinueGameComp
+          onClick={() => initGameRef.current()}
+          animate={
+            gameState === 'readyToStart' && point !== null
+              ? 'animate'
+              : 'initial'
+          }
+        />
+        <StatWrapper
+          animate={
+            gameState === 'readyToStart' && point !== null
+              ? 'animate'
+              : 'initial'
+          }
+        >
           <SlideWithKey itemKey={point}>
             <Counter>{point}</Counter>
           </SlideWithKey>
