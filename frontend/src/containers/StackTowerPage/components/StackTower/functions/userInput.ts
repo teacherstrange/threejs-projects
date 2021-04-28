@@ -109,8 +109,8 @@ export const userInput = ({
         setTimeout(() => {
           gameSetup.gameState = 'readyToStart';
           appProps.setGameState('readyToStart');
-        }, 300);
-      }, 2000);
+        }, 400);
+      }, 1800);
     }
   };
 
@@ -274,8 +274,8 @@ export const userInput = ({
     }
 
     tweenCamera = new TWEEN.Tween({ offsetY: camera.position.y })
-      .to({ offsetY: CAMERA_POS }, 2000)
-      .easing(TWEEN.Easing.Exponential.InOut)
+      .to({ offsetY: CAMERA_POS }, 1800)
+      .easing(TWEEN.Easing.Quadratic.InOut)
       .onUpdate(object => {
         camera.position.y = object.offsetY;
       })
