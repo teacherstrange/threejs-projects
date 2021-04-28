@@ -139,6 +139,10 @@ export const userInput = ({
   };
 
   const initGame = () => {
+    if (gameSetup.gameState !== 'readyToStart') {
+      return;
+    }
+
     appProps.setPoint(0);
     gameSetup.gameState = 'playing';
     appProps.setGameState('playing');
