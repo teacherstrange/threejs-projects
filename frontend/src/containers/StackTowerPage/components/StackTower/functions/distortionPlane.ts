@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
-import { AppObj } from './application';
+import { AppObj, CAMERA_POS } from './application';
 import fragShader from './shaders/distortionPlaneShaders/fragShader.glsl';
 
 export type AnimateProgress = (destination: 1 | 0) => void;
@@ -49,7 +49,7 @@ export const distortionPlane = ({ appObj }: DistortionPlane) => {
     });
     overlay = new THREE.Mesh(overlayGeometry, overlayMaterial);
     overlay.rotation.y = Math.PI * 0.25;
-    overlay.position.set(8, 8, 8);
+    overlay.position.set(CAMERA_POS, CAMERA_POS, CAMERA_POS);
     container.add(overlay);
   };
 

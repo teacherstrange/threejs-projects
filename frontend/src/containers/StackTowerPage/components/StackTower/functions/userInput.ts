@@ -146,6 +146,7 @@ export const userInput = ({
     appProps.setPoint(0);
     gameSetup.gameState = 'playing';
     appProps.setGameState('playing');
+    animationDirection = 1;
 
     destroyBoxes();
     animateInitBackground();
@@ -171,7 +172,6 @@ export const userInput = ({
     scaleUpBox(0);
     animateEnterBox(1);
     animatePlaneProgress(1);
-    animateCamera();
   };
 
   let animationDirection = 1;
