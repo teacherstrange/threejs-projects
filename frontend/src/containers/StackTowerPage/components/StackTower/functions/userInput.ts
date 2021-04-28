@@ -104,10 +104,12 @@ export const userInput = ({
       gameSetup.gameState = 'animating';
       appProps.setGameState('animating');
       animateCameraDown();
-      animatePlaneProgress(0);
       setTimeout(() => {
-        gameSetup.gameState = 'readyToStart';
-        appProps.setGameState('readyToStart');
+        animatePlaneProgress(0);
+        setTimeout(() => {
+          gameSetup.gameState = 'readyToStart';
+          appProps.setGameState('readyToStart');
+        }, 400);
       }, 1800);
     }
   };
