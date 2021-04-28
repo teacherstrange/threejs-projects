@@ -55,7 +55,7 @@ export const world = ({ appProps, appObj }: World) => {
 
   const { container: lightsContainer } = lights();
 
-  const { container: distortionPlaneContainer } = distortionPlane();
+  const { container: distortionPlaneContainer } = distortionPlane({ appObj });
 
   // container.add(new THREE.AxesHelper());
 

@@ -1,8 +1,14 @@
 import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
+
+import { AppObj } from './application';
 import fragShader from './shaders/distortionPlaneShaders/fragShader.glsl';
 
-export const distortionPlane = () => {
+interface DistortionPlane {
+  appObj: AppObj;
+}
+
+export const distortionPlane = ({ appObj }: DistortionPlane) => {
   const container = new THREE.Object3D();
   container.matrixAutoUpdate = false;
 
@@ -23,6 +29,7 @@ export const distortionPlane = () => {
         uColorShadow: { value: new THREE.Color(shadow) },
         uProgress: { value: progress },
         uNoiseSize: { value: size },
+        uTime: { value: 0 },
       },
       vertexShader: `
         varying vec2 vUv;
@@ -48,6 +55,10 @@ export const distortionPlane = () => {
     container.add(overlay);
   };
 
+  appObj.appTime.on('tick', (slowDownFactor, time, delta) => {
+    overlay.material.uniforms.uTime.value = time;
+  });
+
   const animateValues = () => {
     if (!overlay) {
       return;
@@ -71,8 +82,9 @@ export const distortionPlane = () => {
     }
 
     tweenProgress = new TWEEN.Tween({ progress: progress })
-      .to({ progress: 1 }, 7500)
-      .easing(TWEEN.Easing.Exponential.Out)
+      .to({ progress: 1 }, 2000)
+      // .easing(TWEEN.Easing.Exponential.InOut)
+      .easing(TWEEN.Easing.Cubic.Out)
       .onUpdate(obj => {
         overlay.material.uniforms.uProgress.value = obj.progress;
       });
