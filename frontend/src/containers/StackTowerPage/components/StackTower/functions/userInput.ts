@@ -104,12 +104,10 @@ export const userInput = ({
       gameSetup.gameState = 'animating';
       appProps.setGameState('animating');
       animateCameraDown();
+      animatePlaneProgress(0);
       setTimeout(() => {
-        animatePlaneProgress(0);
-        setTimeout(() => {
-          gameSetup.gameState = 'readyToStart';
-          appProps.setGameState('readyToStart');
-        }, 400);
+        gameSetup.gameState = 'readyToStart';
+        appProps.setGameState('readyToStart');
       }, 1800);
     }
   };
@@ -170,6 +168,7 @@ export const userInput = ({
     });
 
     scaleUpBox(0);
+    animateCamera();
     animateEnterBox(1);
     animatePlaneProgress(1);
   };
