@@ -5,7 +5,7 @@ precision mediump float;
 uniform vec3 uColor;
 uniform vec3 uColorShadow;
 uniform float uProgress;
-uniform float uNoiseSize;
+
 
 varying vec2 vUv;
 

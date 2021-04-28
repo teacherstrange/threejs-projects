@@ -3,49 +3,55 @@ import React, { memo, useRef, useEffect, useState } from 'react';
 import { Wrapper } from './styled/Wrapper';
 import { RendererWrapper } from './styled/RendererWrapper';
 import { Cover } from './styled/Cover';
-import { RevealAnimationWithKey } from 'components/Animations/RevealAnimationWithKey/RevealAnimationWithKey';
 import { SlideWithKey } from 'components/Animations/SlideWithKey/SlideWithKey';
 
 import { application } from './functions/application';
 import { StatWrapper } from './styled/StatWrapper';
 import { Counter } from './styled/Counter';
+import { NewGameComp } from './styled/NewGameComp';
 
 interface StackTowerProps {}
+
+export type GameState = 'playing' | 'animating' | 'readyToStart';
 
 const StackTower = memo<StackTowerProps>(props => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
+  const initGameRef = useRef(null);
 
-  const [isStarted, setIsStarted] = useState(false);
+  const [gameState, setGameState] = useState<GameState>('readyToStart');
   const [isReady, setIsReady] = useState(false);
-  const [point, setPoint] = useState(0);
+  const [point, setPoint] = useState<number | null>(null);
 
   useEffect(() => {
-    const { destroy } = application({
+    const { initGame, destroy } = application({
       canvasRefEl: canvasRef.current,
       canvasWrapperRefEl: canvasWrapperRef.current,
-      isStarted,
-      setIsStarted,
+      gameState,
+      setGameState,
       isReady,
       setIsReady,
       point,
       setPoint,
     });
 
+    initGameRef.current = initGame;
+
     return () => {
+      initGameRef.current = null;
       destroy();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    console.log(isStarted);
-  }, [isStarted]);
-
   return (
     <>
       <Wrapper>
         <Cover animate={isReady ? 'animate' : 'initial'} />
+        <NewGameComp
+          onClick={() => initGameRef.current()}
+          animate={point === null && isReady ? 'animate' : 'initial'}
+        />
         <StatWrapper>
           <SlideWithKey itemKey={point}>
             <Counter>{point}</Counter>

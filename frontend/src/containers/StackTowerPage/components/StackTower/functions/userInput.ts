@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { AppObj, CAMERA_POS, ApplicationProps } from './application';
 import { GameSetup } from './world';
 import { AddOverhang } from './overhangBox';
+import { AnimateProgress } from './distortionPlane';
 
 import { AddLayer } from './box';
 
@@ -16,9 +17,11 @@ interface UserInput {
   addOverhang: AddOverhang;
   cannonWorld: CANNON.World;
   destroyBoxes: () => void;
+  animatePlaneProgress: AnimateProgress;
 }
 
 export const userInput = ({
+  animatePlaneProgress,
   destroyBoxes,
   addOverhang,
   addLayer,
@@ -35,80 +38,79 @@ export const userInput = ({
   let tweenBackgroundColor;
 
   const handleClick = () => {
-    if (!gameSetup.gameStarted) {
-      appProps.setPoint(0);
-      gameSetup.gameStarted = true;
-      appProps.setIsStarted(true);
-      initGame();
+    if (gameSetup.gameState !== 'playing') {
+      return;
+    }
+
+    const topLayer = gameSetup.stack[gameSetup.stack.length - 1];
+    const previousLayer = gameSetup.stack[gameSetup.stack.length - 2];
+
+    const direction = topLayer.direction;
+
+    const delta =
+      topLayer.threejs.position[direction] -
+      previousLayer.threejs.position[direction];
+
+    const overhangSize = Math.abs(delta);
+
+    const size = direction === 'x' ? topLayer.width : topLayer.depth;
+
+    const overlap = size - overhangSize;
+
+    if (overlap > 0) {
+      appProps.setPoint(prev => prev + 1);
+      //Cut layer
+      const newWidth = direction === 'x' ? overlap : topLayer.width;
+      const newDepth = direction === 'z' ? overlap : topLayer.depth;
+
+      cutBox(topLayer, overlap, size, delta);
+
+      // Overhang
+      const overhangShift = (overlap / 2 + overhangSize / 2) * Math.sign(delta);
+      const overhangX =
+        direction === 'x'
+          ? topLayer.threejs.position.x + overhangShift
+          : topLayer.threejs.position.x;
+      const overhangZ =
+        direction === 'z'
+          ? topLayer.threejs.position.z + overhangShift
+          : topLayer.threejs.position.z;
+      const overhangWidth = direction === 'x' ? overhangSize : topLayer.width;
+      const overhangDepth = direction === 'z' ? overhangSize : topLayer.depth;
+
+      addOverhang({
+        x: overhangX,
+        z: overhangZ,
+        width: overhangWidth,
+        depth: overhangDepth,
+      });
+
+      //Next layer
+      const nextX = direction === 'x' ? topLayer.threejs.position.x : -10;
+      const nextZ = direction === 'z' ? topLayer.threejs.position.z : -10;
+      const nextDirection = direction === 'x' ? 'z' : 'x';
+
+      addLayer({
+        x: nextX,
+        z: nextZ,
+        width: newWidth,
+        depth: newDepth,
+        direction: nextDirection,
+      });
+      animateCamera();
+      animateBackgroundColor();
+      animateEnterBox(gameSetup.stack.length - 1);
     } else {
-      if (!gameSetup.gameStarted) {
-        return;
-      }
-
-      const topLayer = gameSetup.stack[gameSetup.stack.length - 1];
-      const previousLayer = gameSetup.stack[gameSetup.stack.length - 2];
-
-      const direction = topLayer.direction;
-
-      const delta =
-        topLayer.threejs.position[direction] -
-        previousLayer.threejs.position[direction];
-
-      const overhangSize = Math.abs(delta);
-
-      const size = direction === 'x' ? topLayer.width : topLayer.depth;
-
-      const overlap = size - overhangSize;
-
-      if (overlap > 0) {
-        appProps.setPoint(prev => prev + 1);
-        //Cut layer
-        const newWidth = direction === 'x' ? overlap : topLayer.width;
-        const newDepth = direction === 'z' ? overlap : topLayer.depth;
-
-        cutBox(topLayer, overlap, size, delta);
-
-        // Overhang
-        const overhangShift =
-          (overlap / 2 + overhangSize / 2) * Math.sign(delta);
-        const overhangX =
-          direction === 'x'
-            ? topLayer.threejs.position.x + overhangShift
-            : topLayer.threejs.position.x;
-        const overhangZ =
-          direction === 'z'
-            ? topLayer.threejs.position.z + overhangShift
-            : topLayer.threejs.position.z;
-        const overhangWidth = direction === 'x' ? overhangSize : topLayer.width;
-        const overhangDepth = direction === 'z' ? overhangSize : topLayer.depth;
-
-        addOverhang({
-          x: overhangX,
-          z: overhangZ,
-          width: overhangWidth,
-          depth: overhangDepth,
-        });
-
-        //Next layer
-        const nextX = direction === 'x' ? topLayer.threejs.position.x : -10;
-        const nextZ = direction === 'z' ? topLayer.threejs.position.z : -10;
-        const nextDirection = direction === 'x' ? 'z' : 'x';
-
-        addLayer({
-          x: nextX,
-          z: nextZ,
-          width: newWidth,
-          depth: newDepth,
-          direction: nextDirection,
-        });
-        animateCamera();
-        animateBackgroundColor();
-        animateEnterBox(gameSetup.stack.length - 1);
-      } else {
-        gameSetup.gameStarted = false;
-        appProps.setIsStarted(false);
-        animateCameraDown();
-      }
+      gameSetup.gameState = 'animating';
+      appProps.setGameState('animating');
+      animateCameraDown();
+      setTimeout(() => {
+        animatePlaneProgress(0);
+        setTimeout(() => {
+          gameSetup.gameState = 'readyToStart';
+          appProps.setGameState('readyToStart');
+        }, 300);
+      }, 2000);
     }
   };
 
@@ -137,6 +139,10 @@ export const userInput = ({
   };
 
   const initGame = () => {
+    appProps.setPoint(0);
+    gameSetup.gameState = 'playing';
+    appProps.setGameState('playing');
+
     destroyBoxes();
     animateInitBackground();
 
@@ -160,6 +166,7 @@ export const userInput = ({
 
     scaleUpBox(0);
     animateEnterBox(1);
+    animatePlaneProgress(1);
     animateCamera();
   };
 
@@ -263,8 +270,8 @@ export const userInput = ({
     }
 
     tweenCamera = new TWEEN.Tween({ offsetY: camera.position.y })
-      .to({ offsetY: CAMERA_POS }, 6000)
-      .easing(TWEEN.Easing.Exponential.Out)
+      .to({ offsetY: CAMERA_POS }, 2000)
+      .easing(TWEEN.Easing.Exponential.InOut)
       .onUpdate(object => {
         camera.position.y = object.offsetY;
       })
@@ -332,5 +339,6 @@ export const userInput = ({
 
   return {
     destroy,
+    initGame,
   };
 };

@@ -4,11 +4,13 @@ import * as THREE from 'three';
 import * as dat from 'dat.gui';
 import TWEEN from '@tweenjs/tween.js';
 
+import { GameState } from '../StackTower';
+
 export interface ApplicationProps {
   canvasRefEl: HTMLCanvasElement;
   canvasWrapperRefEl: HTMLDivElement;
-  isStarted: boolean;
-  setIsStarted: React.Dispatch<React.SetStateAction<boolean>>;
+  gameState: GameState;
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>;
   isReady: boolean;
   setIsReady: React.Dispatch<React.SetStateAction<boolean>>;
   point: number;
@@ -136,9 +138,9 @@ export const application = (appProps: ApplicationProps) => {
   };
 
   const setWorld = () => {
-    const { destroy, container } = world({ appObj, appProps });
+    const { initGame, destroy, container } = world({ appObj, appProps });
     appObj.scene.add(container);
-    return { destroy };
+    return { destroy, initGame };
   };
 
   const setConfig = () => {
@@ -166,9 +168,9 @@ export const application = (appProps: ApplicationProps) => {
   onResize();
   setConfig();
   setDebug();
-  const { destroy: destroySetWorld } = setWorld();
+  const { initGame, destroy: destroySetWorld } = setWorld();
   setListeners();
   appProps.setIsReady(true);
 
-  return { destroy };
+  return { destroy, initGame };
 };

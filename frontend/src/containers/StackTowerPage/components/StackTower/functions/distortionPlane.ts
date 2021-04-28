@@ -4,6 +4,8 @@ import TWEEN from '@tweenjs/tween.js';
 import { AppObj } from './application';
 import fragShader from './shaders/distortionPlaneShaders/fragShader.glsl';
 
+export type AnimateProgress = (destination: 1 | 0) => void;
+
 interface DistortionPlane {
   appObj: AppObj;
 }
@@ -12,12 +14,9 @@ export const distortionPlane = ({ appObj }: DistortionPlane) => {
   const container = new THREE.Object3D();
   container.matrixAutoUpdate = false;
 
-  let tweenSize;
   let tweenProgress;
-  const color = '#73BADA';
-  const shadow = '#58A4D3';
-  const size = 1;
-  const progress = 0;
+  const color = '#b68aff';
+  const shadow = '#9a5cff';
 
   let overlay;
 
@@ -27,8 +26,8 @@ export const distortionPlane = ({ appObj }: DistortionPlane) => {
       uniforms: {
         uColor: { value: new THREE.Color(color) },
         uColorShadow: { value: new THREE.Color(shadow) },
-        uProgress: { value: progress },
-        uNoiseSize: { value: size },
+        uProgress: { value: 0 },
+
         uTime: { value: 0 },
       },
       vertexShader: `
@@ -50,7 +49,6 @@ export const distortionPlane = ({ appObj }: DistortionPlane) => {
     });
     overlay = new THREE.Mesh(overlayGeometry, overlayMaterial);
     overlay.rotation.y = Math.PI * 0.25;
-    // overlay.rotation.x = Math.PI * 0.6;
     overlay.position.set(8, 8, 8);
     container.add(overlay);
   };
@@ -59,31 +57,19 @@ export const distortionPlane = ({ appObj }: DistortionPlane) => {
     overlay.material.uniforms.uTime.value = time;
   });
 
-  const animateValues = () => {
+  const animateProgress: AnimateProgress = destination => {
     if (!overlay) {
       return;
     }
-
-    if (tweenSize) {
-      tweenSize.stop();
-    }
-
-    tweenSize = new TWEEN.Tween({ size: size })
-      .to({ size: 5 }, 7500)
-      .easing(TWEEN.Easing.Exponential.Out)
-      .onUpdate(obj => {
-        overlay.material.uniforms.uNoiseSize.value = obj.size;
-      });
-
-    tweenSize.start();
 
     if (tweenProgress) {
       tweenProgress.stop();
     }
 
-    tweenProgress = new TWEEN.Tween({ progress: progress })
-      .to({ progress: 1 }, 2000)
-      // .easing(TWEEN.Easing.Exponential.InOut)
+    tweenProgress = new TWEEN.Tween({
+      progress: overlay.material.uniforms.uProgress.value,
+    })
+      .to({ progress: destination }, 2000)
       .easing(TWEEN.Easing.Cubic.Out)
       .onUpdate(obj => {
         overlay.material.uniforms.uProgress.value = obj.progress;
@@ -94,9 +80,8 @@ export const distortionPlane = ({ appObj }: DistortionPlane) => {
 
   generatePlane();
 
-  animateValues();
-
   return {
     container,
+    animateProgress,
   };
 };

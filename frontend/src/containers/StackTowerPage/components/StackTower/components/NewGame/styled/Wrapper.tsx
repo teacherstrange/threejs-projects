@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 interface Props {}
 
-export const Counter = styled(motion.div)<Props>`
-  font-size: 50px;
-  font-weight: bold;
+export const Wrapper = styled(motion.button)<Props>`
+  cursor: pointer;
+  z-index: 1;
 `;

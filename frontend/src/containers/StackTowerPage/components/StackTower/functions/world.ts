@@ -7,9 +7,10 @@ import { userInput } from './userInput';
 import { overhangBox } from './overhangBox';
 import { physics } from './physics';
 import { distortionPlane } from './distortionPlane';
+import { GameState } from '../StackTower';
 
 export interface GameSetup {
-  gameStarted: boolean;
+  gameState: GameState;
   BOX_HEIGHT: number;
   ORIGINAL_BOX_SIZE: number;
   stack: StackBox[];
@@ -26,7 +27,7 @@ export const world = ({ appProps, appObj }: World) => {
   container.matrixAutoUpdate = false;
 
   const gameSetup: GameSetup = {
-    gameStarted: appProps.isStarted,
+    gameState: appProps.gameState,
     BOX_HEIGHT: 0.8,
     ORIGINAL_BOX_SIZE: 3,
     stack: [],
@@ -34,6 +35,11 @@ export const world = ({ appProps, appObj }: World) => {
   };
 
   const { cannonWorld } = physics({ appObj });
+
+  const {
+    animateProgress: animatePlaneProgress,
+    container: distortionPlaneContainer,
+  } = distortionPlane({ appObj });
 
   const { destroyBoxes, generateBox, addLayer, container: boxContainer } = box({
     gameSetup,
@@ -43,7 +49,8 @@ export const world = ({ appProps, appObj }: World) => {
 
   const { addOverhang } = overhangBox({ generateBox, gameSetup });
 
-  const { destroy: destroyUserInput } = userInput({
+  const { initGame, destroy: destroyUserInput } = userInput({
+    animatePlaneProgress,
     destroyBoxes,
     cannonWorld,
     appObj,
@@ -54,8 +61,6 @@ export const world = ({ appProps, appObj }: World) => {
   });
 
   const { container: lightsContainer } = lights();
-
-  const { container: distortionPlaneContainer } = distortionPlane({ appObj });
 
   // container.add(new THREE.AxesHelper());
 
@@ -70,5 +75,6 @@ export const world = ({ appProps, appObj }: World) => {
   return {
     container,
     destroy,
+    initGame,
   };
 };
