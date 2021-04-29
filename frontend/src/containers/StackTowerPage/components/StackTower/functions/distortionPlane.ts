@@ -69,8 +69,8 @@ export const distortionPlane = ({ appObj }: DistortionPlane) => {
     tweenProgress = new TWEEN.Tween({
       progress: overlay.material.uniforms.uProgress.value,
     })
-      .to({ progress: destination }, 2000)
-      .easing(TWEEN.Easing.Cubic.Out)
+      .to({ progress: destination }, 800)
+      .easing(TWEEN.Easing.Quadratic.Out)
       .onUpdate(obj => {
         overlay.material.uniforms.uProgress.value = obj.progress;
       });
