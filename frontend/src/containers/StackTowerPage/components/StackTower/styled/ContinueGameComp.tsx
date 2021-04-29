@@ -34,7 +34,7 @@ ContinueGameComp.defaultProps = {
       y: '-50%',
       x: '-50%',
       transition: {
-        delay: 0.7,
+        delay: 0.55,
         ...springElastic,
       },
     },

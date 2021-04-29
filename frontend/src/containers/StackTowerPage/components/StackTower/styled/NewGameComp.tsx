@@ -34,7 +34,7 @@ NewGameComp.defaultProps = {
       y: '-50%',
       x: '-50%',
       transition: {
-        delay: 0.5,
+        delay: 0.4,
         ...springElastic,
       },
     },

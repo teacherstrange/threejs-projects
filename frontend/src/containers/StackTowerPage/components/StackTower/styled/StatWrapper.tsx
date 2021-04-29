@@ -26,7 +26,7 @@ StatWrapper.defaultProps = {
     animate: {
       x: '-50%',
       y: '-50%',
-      scale: 3,
+      scale: 2.5,
       top: '50%',
     },
   },
