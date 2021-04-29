@@ -36,6 +36,7 @@ export const userInput = ({
   let tweenCamera;
   let tweenScaleUp;
   let tweenBackgroundColor;
+  let scaleDownBoxTween;
 
   const handleClick = () => {
     if (gameSetup.gameState !== 'playing') {
@@ -140,40 +141,59 @@ export const userInput = ({
     topLayer.cannonjs.addShape(shape);
   };
 
+  const scaleDownBox = layerPosition => {
+    const layerObject = gameSetup.stack[layerPosition];
+
+    scaleDownBoxTween = new TWEEN.Tween(layerObject.threejs.scale)
+      .to({ x: 0, y: 0, z: 0 }, 600)
+      .easing(TWEEN.Easing.Cubic.In);
+
+    scaleDownBoxTween.start();
+  };
+
   const initGame = () => {
     if (gameSetup.gameState !== 'readyToStart') {
       return;
     }
 
-    appProps.setPoint(0);
-    gameSetup.gameState = 'playing';
-    appProps.setGameState('playing');
-    animationDirection = 1;
-
-    destroyBoxes();
-
-    // Foundation
-    addLayer({
-      x: 0,
-      z: 0,
-      width: gameSetup.ORIGINAL_BOX_SIZE,
-      depth: gameSetup.ORIGINAL_BOX_SIZE,
-      direction: 'z',
+    gameSetup.stack.forEach((element, key) => {
+      scaleDownBox(key);
     });
 
-    // First layer
-    addLayer({
-      x: -10,
-      z: 0,
-      width: gameSetup.ORIGINAL_BOX_SIZE,
-      depth: gameSetup.ORIGINAL_BOX_SIZE,
-      direction: 'x',
-    });
+    setTimeout(
+      () => {
+        appProps.setPoint(0);
+        gameSetup.gameState = 'playing';
+        appProps.setGameState('playing');
+        animationDirection = 1;
 
-    scaleUpBox(0);
-    animateCamera();
-    animateEnterBox(1);
-    animatePlaneProgress(1);
+        destroyBoxes();
+
+        // Foundation
+        addLayer({
+          x: 0,
+          z: 0,
+          width: gameSetup.ORIGINAL_BOX_SIZE,
+          depth: gameSetup.ORIGINAL_BOX_SIZE,
+          direction: 'z',
+        });
+
+        // First layer
+        addLayer({
+          x: -10,
+          z: 0,
+          width: gameSetup.ORIGINAL_BOX_SIZE,
+          depth: gameSetup.ORIGINAL_BOX_SIZE,
+          direction: 'x',
+        });
+
+        scaleUpBox(0);
+        animateCamera();
+        animateEnterBox(1);
+        animatePlaneProgress(1);
+      },
+      gameSetup.stack.length === 0 ? 0 : 600,
+    );
   };
 
   let animationDirection = 1;
