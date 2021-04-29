@@ -153,6 +153,9 @@ export const userInput = ({
       return;
     }
 
+    gameSetup.gameState = 'animating';
+    appProps.setGameState('animating');
+
     gameSetup.stack.forEach((_element, key) => {
       scaleDownBox(gameSetup.stack[key]);
     });
