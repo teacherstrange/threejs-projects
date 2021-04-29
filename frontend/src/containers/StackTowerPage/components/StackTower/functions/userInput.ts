@@ -140,9 +140,7 @@ export const userInput = ({
     topLayer.cannonjs.addShape(shape);
   };
 
-  const scaleDownBox = layerPosition => {
-    const layerObject = gameSetup.stack[layerPosition];
-
+  const scaleDownBox = layerObject => {
     const scaleDownBoxTween = new TWEEN.Tween(layerObject.threejs.scale)
       .to({ x: 0, y: 0, z: 0 }, 600)
       .easing(TWEEN.Easing.Cubic.In);
@@ -155,8 +153,12 @@ export const userInput = ({
       return;
     }
 
-    gameSetup.stack.forEach((element, key) => {
-      scaleDownBox(key);
+    gameSetup.stack.forEach((_element, key) => {
+      scaleDownBox(gameSetup.stack[key]);
+    });
+
+    gameSetup.overhangs.forEach((_element, key) => {
+      scaleDownBox(gameSetup.overhangs[key]);
     });
 
     setTimeout(
