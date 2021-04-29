@@ -36,7 +36,6 @@ export const userInput = ({
   let tweenCamera;
   let tweenScaleUp;
   let tweenBackgroundColor;
-  let scaleDownBoxTween;
 
   const handleClick = () => {
     if (gameSetup.gameState !== 'playing') {
@@ -144,7 +143,7 @@ export const userInput = ({
   const scaleDownBox = layerPosition => {
     const layerObject = gameSetup.stack[layerPosition];
 
-    scaleDownBoxTween = new TWEEN.Tween(layerObject.threejs.scale)
+    const scaleDownBoxTween = new TWEEN.Tween(layerObject.threejs.scale)
       .to({ x: 0, y: 0, z: 0 }, 600)
       .easing(TWEEN.Easing.Cubic.In);
 
