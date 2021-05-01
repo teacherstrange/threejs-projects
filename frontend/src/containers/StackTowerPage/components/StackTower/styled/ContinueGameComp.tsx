@@ -20,6 +20,7 @@ export const ContinueGameComp = styled(ContinueGame)<Props>`
 ContinueGameComp.defaultProps = {
   variants: {
     initial: {
+      pointerEvents: 'none',
       opacity: 0,
       y: '-0%',
       x: '-50%',
@@ -30,6 +31,7 @@ ContinueGameComp.defaultProps = {
       },
     },
     animate: {
+      pointerEvents: 'initial',
       opacity: 1,
       y: '-50%',
       x: '-50%',
@@ -37,11 +39,6 @@ ContinueGameComp.defaultProps = {
         delay: 0.55,
         ...springElastic,
       },
-    },
-    exit: {
-      opacity: 0,
-      y: '-50%',
-      x: '-50%',
     },
   },
 

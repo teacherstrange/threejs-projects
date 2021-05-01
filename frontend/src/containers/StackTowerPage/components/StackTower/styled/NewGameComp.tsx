@@ -20,6 +20,7 @@ export const NewGameComp = styled(NewGame)<Props>`
 NewGameComp.defaultProps = {
   variants: {
     initial: {
+      pointerEvents: 'none',
       opacity: 0,
       y: '-0%',
       x: '-50%',
@@ -30,6 +31,7 @@ NewGameComp.defaultProps = {
       },
     },
     animate: {
+      pointerEvents: 'initial',
       opacity: 1,
       y: '-50%',
       x: '-50%',
@@ -37,11 +39,6 @@ NewGameComp.defaultProps = {
         delay: 0.3,
         ...springElastic,
       },
-    },
-    exit: {
-      opacity: 0,
-      y: '-50%',
-      x: '-50%',
     },
   },
 

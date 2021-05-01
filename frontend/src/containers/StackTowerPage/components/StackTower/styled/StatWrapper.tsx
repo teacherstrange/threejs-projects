@@ -13,6 +13,7 @@ export const StatWrapper = styled(motion.div)<Props>`
   z-index: 10;
   width: 100px;
   height: 100px;
+  pointer-events: none;
 `;
 
 StatWrapper.defaultProps = {
