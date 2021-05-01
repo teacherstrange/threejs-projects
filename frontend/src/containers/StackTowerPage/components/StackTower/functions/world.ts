@@ -8,6 +8,7 @@ import { overhangBox } from './overhangBox';
 import { physics } from './physics';
 import { distortionPlane } from './distortionPlane';
 import { GameState } from '../StackTower';
+import { particles } from './particles';
 
 export interface GameSetup {
   gameState: GameState;
@@ -60,15 +61,23 @@ export const world = ({ appProps, appObj }: World) => {
     addOverhang,
   });
 
+  const {
+    destroy: destroyParticles,
+    container: particlesContainer,
+  } = particles();
+
   const { container: lightsContainer } = lights();
 
   // container.add(new THREE.AxesHelper());
 
   container.add(boxContainer);
   container.add(lightsContainer);
+
+  container.add(particlesContainer);
   container.add(distortionPlaneContainer);
 
   const destroy = () => {
+    destroyParticles();
     destroyUserInput();
   };
 

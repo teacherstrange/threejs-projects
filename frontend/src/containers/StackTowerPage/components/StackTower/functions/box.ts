@@ -55,6 +55,7 @@ export const box = ({ appObj, cannonWorld, gameSetup }: Box) => {
     const material = new THREE.MeshLambertMaterial({ color });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(x, y, z);
+
     container.add(mesh);
 
     //CannonJS
