@@ -6,6 +6,7 @@ import { AppObj, CAMERA_POS, ApplicationProps } from './application';
 import { GameSetup } from './world';
 import { AddOverhang } from './overhangBox';
 import { AnimateProgress } from './distortionPlane';
+import { GenerateParticles } from './particles';
 
 import { AddLayer } from './box';
 
@@ -18,9 +19,13 @@ interface UserInput {
   cannonWorld: CANNON.World;
   destroyBoxes: () => void;
   animatePlaneProgress: AnimateProgress;
+  generateParticles: GenerateParticles;
+  clearParticles: () => void;
 }
 
 export const userInput = ({
+  clearParticles,
+  generateParticles,
   animatePlaneProgress,
   destroyBoxes,
   addOverhang,
@@ -63,7 +68,14 @@ export const userInput = ({
       const newWidth = direction === 'x' ? overlap : topLayer.width;
       const newDepth = direction === 'z' ? overlap : topLayer.depth;
 
-      cutBox(topLayer, overlap, size, delta);
+      const oldVal = topLayer.width * topLayer.depth;
+      const newVal = newWidth * newDepth;
+      const startVal =
+        gameSetup.ORIGINAL_BOX_SIZE * gameSetup.ORIGINAL_BOX_SIZE;
+
+      const restArea = (oldVal - newVal) / startVal;
+
+      cutBox(topLayer, overlap, size, delta, restArea);
 
       // Overhang
       const overhangShift = (overlap / 2 + overhangSize / 2) * Math.sign(delta);
@@ -86,8 +98,8 @@ export const userInput = ({
       });
 
       //Next layer
-      const nextX = direction === 'x' ? topLayer.threejs.position.x : -10;
-      const nextZ = direction === 'z' ? topLayer.threejs.position.z : -10;
+      const nextX = direction === 'x' ? topLayer.threejs.position.x : -8;
+      const nextZ = direction === 'z' ? topLayer.threejs.position.z : -8;
       const nextDirection = direction === 'x' ? 'z' : 'x';
 
       addLayer({
@@ -116,7 +128,7 @@ export const userInput = ({
     }
   };
 
-  const cutBox = (topLayer, overlap, size, delta) => {
+  const cutBox = (topLayer, overlap, size, delta, restArea) => {
     const direction = topLayer.direction;
     const newWidth = direction === 'x' ? overlap : topLayer.width;
     const newDepth = direction === 'z' ? overlap : topLayer.depth;
@@ -138,6 +150,14 @@ export const userInput = ({
     );
     topLayer.cannonjs.shapes = [];
     topLayer.cannonjs.addShape(shape);
+
+    const count = Math.floor(500 * restArea);
+
+    const newParticle = generateParticles({
+      y: gameSetup.BOX_HEIGHT * (gameSetup.stack.length - 1),
+      count: count,
+    });
+    gameSetup.particles.push(newParticle);
   };
 
   const scaleDownBox = layerObject => {
@@ -172,6 +192,7 @@ export const userInput = ({
         animationDirection = 1;
 
         destroyBoxes();
+        clearParticles();
 
         // Foundation
         addLayer({
@@ -211,11 +232,11 @@ export const userInput = ({
       return;
     }
 
-    if (topLayer.threejs.position[topLayer.direction] >= CAMERA_POS) {
+    if (topLayer.threejs.position[topLayer.direction] >= 8) {
       animationDirection = -1;
     }
 
-    if (topLayer.threejs.position[topLayer.direction] <= -CAMERA_POS) {
+    if (topLayer.threejs.position[topLayer.direction] <= -8) {
       animationDirection = 1;
     }
 

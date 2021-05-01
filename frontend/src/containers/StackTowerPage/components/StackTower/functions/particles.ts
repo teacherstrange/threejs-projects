@@ -1,73 +1,116 @@
 import * as THREE from 'three';
+import TWEEN from '@tweenjs/tween.js';
 
 import firefliesVertexShader from './shaders/fireflies/vertex.glsl';
 import firefliesFragmentShader from './shaders/fireflies/fragment.glsl';
 
 import { AppObj } from './application';
+import { GameSetup } from './world';
+
+interface GenerateParticlesProps {
+  y: number;
+  count: number;
+}
+
+export type GenerateParticles = (props: GenerateParticlesProps) => Particle;
 
 interface ParticlesProps {
   appObj: AppObj;
+  gameSetup: GameSetup;
 }
 
-export const particles = ({ appObj }: ParticlesProps) => {
+export interface Particle {
+  threejs: THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial>;
+}
+
+export const particles = ({ appObj, gameSetup }: ParticlesProps) => {
   const container = new THREE.Object3D();
   container.matrixAutoUpdate = false;
 
-  const RANDOM_SIZE = 8;
+  const generateParticles = ({
+    y,
+    count,
+  }: GenerateParticlesProps): Particle => {
+    const RANDOM_SIZE = 6;
 
-  const firefliesGeometry = new THREE.BufferGeometry();
-  const firefliesCount = 30;
-  const positionArray = new Float32Array(firefliesCount * 3);
-  const scaleArray = new Float32Array(firefliesCount);
+    const firefliesGeometry = new THREE.BufferGeometry();
 
-  for (let i = 0; i < firefliesCount; i++) {
-    positionArray[i * 3 + 0] = (Math.random() - 0.5) * RANDOM_SIZE;
-    positionArray[i * 3 + 1] = (Math.random() - 0.5) * RANDOM_SIZE;
-    positionArray[i * 3 + 2] = (Math.random() - 0.5) * RANDOM_SIZE;
-    scaleArray[i] = Math.random();
-  }
+    const positionArray = new Float32Array(count * 3);
+    const scaleArray = new Float32Array(count);
 
-  firefliesGeometry.setAttribute(
-    'position',
-    new THREE.BufferAttribute(positionArray, 3),
-  );
+    for (let i = 0; i < count; i++) {
+      positionArray[i * 3 + 0] = (Math.random() - 0.5) * RANDOM_SIZE;
+      positionArray[i * 3 + 1] = y;
+      positionArray[i * 3 + 2] = (Math.random() - 0.5) * RANDOM_SIZE;
+      scaleArray[i] = Math.random();
+    }
 
-  // Material
-  const firefliesMaterial = new THREE.ShaderMaterial({
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-    transparent: true,
-    uniforms: {
-      uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-      uSize: { value: 500 },
-      uTime: { value: 0 },
-    },
-    vertexShader: firefliesVertexShader,
-    fragmentShader: firefliesFragmentShader,
-  });
-
-  firefliesGeometry.setAttribute(
-    'aScale',
-    new THREE.BufferAttribute(scaleArray, 1),
-  );
-
-  // Points
-  const fireflies = new THREE.Points(firefliesGeometry, firefliesMaterial);
-
-  fireflies.renderOrder = 1;
-
-  container.add(fireflies);
-
-  const onResize = () => {
-    firefliesMaterial.uniforms.uPixelRatio.value = Math.min(
-      window.devicePixelRatio,
-      2,
+    firefliesGeometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(positionArray, 3),
     );
+
+    // Material
+    const firefliesMaterial = new THREE.ShaderMaterial({
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      uniforms: {
+        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+        uSize: { value: 220 },
+        uTime: { value: 0 },
+        uScale: { value: 0 },
+      },
+      vertexShader: firefliesVertexShader,
+      fragmentShader: firefliesFragmentShader,
+    });
+
+    firefliesGeometry.setAttribute(
+      'aScale',
+      new THREE.BufferAttribute(scaleArray, 1),
+    );
+
+    // Points
+    const fireflies = new THREE.Points(firefliesGeometry, firefliesMaterial);
+
+    fireflies.renderOrder = 1;
+
+    container.add(fireflies);
+
+    const tweenProgress = new TWEEN.Tween({
+      progress: fireflies.material.uniforms.uScale.value,
+    })
+      .to({ progress: 1 }, 1000)
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onUpdate(obj => {
+        fireflies.material.uniforms.uScale.value = obj.progress;
+      });
+
+    tweenProgress.start();
+
+    appObj.appTime.on('tick', (slowDownFactor, time, delta) => {
+      firefliesMaterial.uniforms.uTime.value = time / 700;
+    });
+
+    return {
+      threejs: fireflies,
+    };
   };
 
-  appObj.appTime.on('tick', (slowDownFactor, time, delta) => {
-    firefliesMaterial.uniforms.uTime.value = time / 700;
-  });
+  const clearParticles = () => {
+    for (const object of gameSetup.particles) {
+      container.remove(object.threejs);
+    }
+
+    gameSetup.particles = [];
+  };
+
+  const onResize = () => {
+    // firefliesMaterial.uniforms.uPixelRatio.value = Math.min(
+    //   window.devicePixelRatio,
+    //   2,
+    // );
+  };
 
   window.addEventListener('resize', onResize);
 
@@ -78,5 +121,7 @@ export const particles = ({ appObj }: ParticlesProps) => {
   return {
     container,
     destroy,
+    generateParticles,
+    clearParticles,
   };
 };

@@ -8,7 +8,7 @@ import { overhangBox } from './overhangBox';
 import { physics } from './physics';
 import { distortionPlane } from './distortionPlane';
 import { GameState } from '../StackTower';
-import { particles } from './particles';
+import { particles, Particle } from './particles';
 
 export interface GameSetup {
   gameState: GameState;
@@ -16,6 +16,7 @@ export interface GameSetup {
   ORIGINAL_BOX_SIZE: number;
   stack: StackBox[];
   overhangs: StackBox[];
+  particles: Particle[];
 }
 
 interface World {
@@ -33,6 +34,7 @@ export const world = ({ appProps, appObj }: World) => {
     ORIGINAL_BOX_SIZE: 3,
     stack: [],
     overhangs: [],
+    particles: [],
   };
 
   const { cannonWorld } = physics({ appObj });
@@ -50,8 +52,17 @@ export const world = ({ appProps, appObj }: World) => {
 
   const { addOverhang } = overhangBox({ generateBox, gameSetup });
 
+  const {
+    clearParticles,
+    generateParticles,
+    destroy: destroyParticles,
+    container: particlesContainer,
+  } = particles({ appObj, gameSetup });
+
   const { initGame, destroy: destroyUserInput } = userInput({
+    clearParticles,
     animatePlaneProgress,
+    generateParticles,
     destroyBoxes,
     cannonWorld,
     appObj,
@@ -60,11 +71,6 @@ export const world = ({ appProps, appObj }: World) => {
     addLayer,
     addOverhang,
   });
-
-  const {
-    destroy: destroyParticles,
-    container: particlesContainer,
-  } = particles({ appObj });
 
   const { container: lightsContainer } = lights();
 
