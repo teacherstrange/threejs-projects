@@ -18,7 +18,7 @@ export default function StackTowerPage(props: Props) {
       <Head
         shouldIndex={true}
         description="Online stack game made with three.js"
-        ogImage={{ url: 'https://threejs-projects.vercel.app/888.jpg' }}
+        ogImage={{ url: 'https://threejs-projects.vercel.app/888.JPG' }}
         ogType="website"
         title="Stack game"
       />
