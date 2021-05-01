@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
-import firefliesVertexShader from './shaders/fireflies/vertexShader.glsl';
-import firefliesFragmentShader from './shaders/fireflies/fragShader.glsl';
+// import firefliesVertexShader from './shaders/fireflies/vertexShader.glsl';
+// import firefliesFragmentShader from './shaders/fireflies/fragShader.glsl';
 
 import { AppObj } from './application';
 import { GameSetup } from './world';
@@ -61,8 +61,32 @@ export const particles = ({ appObj, gameSetup }: ParticlesProps) => {
         uTime: { value: 0 },
         uScale: { value: 0 },
       },
-      vertexShader: firefliesVertexShader,
-      fragmentShader: firefliesFragmentShader,
+      vertexShader: `uniform float uPixelRatio;
+      uniform float uSize;
+      uniform float uTime;
+      uniform float uScale;
+      
+      attribute float aScale;
+      
+      void main()
+      {
+           vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+          modelPosition.y += sin(uTime * 0.35 + modelPosition.x * 100.0) * aScale * 0.3;
+          modelPosition.x += cos(uTime * 0.35 + modelPosition.x * 100.0) * aScale * 0.3;
+          vec4 viewPosition = viewMatrix * modelPosition;
+          vec4 projectionPosition = projectionMatrix * viewPosition;
+      
+          gl_Position = projectionPosition;
+          
+          gl_PointSize = uSize * aScale * uPixelRatio * uScale * abs(sin(uTime * aScale));
+          gl_PointSize *= (1.0 / - viewPosition.z);
+      }`,
+      fragmentShader: `void main()
+      {
+        float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
+          float strength = 0.05 / distanceToCenter - 0.1;
+          gl_FragColor = vec4(1.0, 1.0, 1.0, strength);
+      }`,
     });
 
     firefliesGeometry.setAttribute(
