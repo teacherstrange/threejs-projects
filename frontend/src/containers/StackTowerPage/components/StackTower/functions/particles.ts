@@ -56,8 +56,8 @@ export const particles = ({ appObj, gameSetup }: ParticlesProps) => {
       blending: THREE.AdditiveBlending,
       transparent: true,
       uniforms: {
-        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        uSize: { value: 220 },
+        uPixelRatio: { value: Math.min(window.devicePixelRatio, 1) },
+        uSize: { value: 150 },
         uTime: { value: 0 },
         uScale: { value: 0 },
       },
@@ -106,10 +106,12 @@ export const particles = ({ appObj, gameSetup }: ParticlesProps) => {
   };
 
   const onResize = () => {
-    // firefliesMaterial.uniforms.uPixelRatio.value = Math.min(
-    //   window.devicePixelRatio,
-    //   2,
-    // );
+    for (const object of gameSetup.particles) {
+      object.threejs.material.uniforms.uPixelRatio.value = Math.min(
+        window.devicePixelRatio,
+        1,
+      );
+    }
   };
 
   window.addEventListener('resize', onResize);
