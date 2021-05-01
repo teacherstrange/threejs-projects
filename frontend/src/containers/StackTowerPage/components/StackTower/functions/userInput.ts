@@ -6,6 +6,8 @@ import { AppObj, CAMERA_POS, ApplicationProps } from './application';
 import { GameSetup } from './world';
 import { AddOverhang } from './overhangBox';
 import { AnimateProgress } from './distortionPlane';
+import popSoundMp3 from './assets/pop.mp3';
+import malikMp3 from './assets/malik.mp3';
 
 import { AddLayer } from './box';
 
@@ -37,7 +39,19 @@ export const userInput = ({
   let tweenScaleUp;
   let tweenBackgroundColor;
 
+  const popSound = new Audio(popSoundMp3);
+  popSound.volume = 0.2;
+
+  const malik = new Audio(malikMp3);
+  malik.loop = true;
+
+  malik.volume = 0.3;
+
   const handleClick = () => {
+    if (malik.paused) {
+      malik.play();
+    }
+
     if (gameSetup.gameState !== 'playing') {
       return;
     }
@@ -138,6 +152,7 @@ export const userInput = ({
     );
     topLayer.cannonjs.shapes = [];
     topLayer.cannonjs.addShape(shape);
+    popSound.play();
   };
 
   const scaleDownBox = layerObject => {
