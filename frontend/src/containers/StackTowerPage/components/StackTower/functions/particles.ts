@@ -57,7 +57,7 @@ export const particles = ({ appObj, gameSetup }: ParticlesProps) => {
       transparent: true,
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 1) },
-        uSize: { value: 150 },
+        uSize: { value: 120 },
         uTime: { value: 0 },
         uScale: { value: 0 },
       },

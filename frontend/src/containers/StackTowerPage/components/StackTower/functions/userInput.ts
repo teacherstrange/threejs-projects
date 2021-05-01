@@ -151,7 +151,7 @@ export const userInput = ({
     topLayer.cannonjs.shapes = [];
     topLayer.cannonjs.addShape(shape);
 
-    const count = Math.floor(500 * restArea);
+    const count = Math.floor(800 * restArea);
 
     const newParticle = generateParticles({
       y: gameSetup.BOX_HEIGHT * (gameSetup.stack.length - 1),
