@@ -152,6 +152,7 @@ export const userInput = ({
     );
     topLayer.cannonjs.shapes = [];
     topLayer.cannonjs.addShape(shape);
+    popSound.currentTime = 0;
     popSound.play();
   };
 
