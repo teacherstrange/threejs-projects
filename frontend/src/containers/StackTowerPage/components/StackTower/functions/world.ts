@@ -64,7 +64,7 @@ export const world = ({ appProps, appObj }: World) => {
   const {
     destroy: destroyParticles,
     container: particlesContainer,
-  } = particles();
+  } = particles({ appObj });
 
   const { container: lightsContainer } = lights();
 
