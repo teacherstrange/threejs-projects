@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
-import firefliesVertexShader from './shaders/fireflies/vertex.glsl';
-import firefliesFragmentShader from './shaders/fireflies/fragment.glsl';
+import firefliesVertexShader from './shaders/fireflies/vertexShader.glsl';
+import firefliesFragmentShader from './shaders/fireflies/fragShader.glsl';
 
 import { AppObj } from './application';
 import { GameSetup } from './world';
